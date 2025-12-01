@@ -2,8 +2,8 @@
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://github.com/samuelserejasilva/portal-frontend-architecture-vite-spa/blob/main/main.ts)
 [![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://github.com/samuelserejasilva/portal-frontend-architecture-vite-spa/blob/main/vite.config.ts)
-![Performance](https://img.shields.io/badge/Lighthouse-100-success?style=for-the-badge&logo=lighthouse&logoColor=white)
-![Status](https://img.shields.io/badge/Status-Showcase-orange?style=for-the-badge)
+[![Performance](https://img.shields.io/badge/Lighthouse-100-success?style=for-the-badge&logo=lighthouse&logoColor=white)]()
+[![Status](https://img.shields.io/badge/Status-Showcase-orange?style=for-the-badge)](https://github.com/samuelserejasilva/portal-frontend-architecture-vite-spa/blob/main/ESTRUTURA-FRONTEND.md)
 
 Showcase de **Arquitetura SPA de Alta Performance** (Vanilla TypeScript + Vite) desenvolvida para o **Portal Auditoria 2.0**.
 
