@@ -256,7 +256,7 @@ dist/index.html (com <link> injetado automaticamente)
 | `utilities.css` | Grid system + classes utilitárias |
 | `components.css` | Componentes (botões, cards, navegação) |
 
-**Documentação completa:** [src/styles/README-CSS-USAGE.md](ESTRUTURA-FRONTEND.md)
+**Documentação completa:** [README-CSS-USAGE.md](README-CSS-USAGE.md)
 
 ---
 
@@ -451,8 +451,8 @@ fetch('/api/empresas', {
 | 🌐 API REST Completa | [docs/api-documentation.md](docs/api-documentation.md) |
 | 📘 Guia de Implementação | [docs/guides/IMPLEMENTATION_GUIDE.md](docs/guides/IMPLEMENTATION_GUIDE.md) |
 | 🏗️ Estrutura do Projeto | [ESTRUTURA-FRONTEND.md](ESTRUTURA-FRONTEND.md) |
-| 🎨 Guia de CSS | [ESTRUTURA-FRONTEND.md](ESTRUTURA-FRONTEND.md) |
-| 📊 Estado Atual | [docs/RELATORIO-TECNICO-ESTADO-ATUAL.md](docs/RELATORIO-TECNICO-ESTADO-ATUAL.md) |
+| 🎨 Guia de CSS | [README-CSS-USAGE.md](README-CSS-USAGE.md) |
+| 📊 Estado Atual | [ESTRUTURA-FRONTEND.md](ESTRUTURA-FRONTEND.md) |
 
 ---
 
