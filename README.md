@@ -28,6 +28,22 @@ Demonstrar, de forma transparente e técnica, como foi projetada uma **Single Pa
 - ✅ **Web Vitals Otimizados:** Foco total em LCP, FID, CLS e TTI.
 - ✅ **Bundle Leve:** Tamanho final **< 200KB (gzipped)**.
 - ✅ **Acessibilidade:** Pensada para rodar fluidamente até em redes móveis (3G/4G).
+- ✅ **Bundler / Dev Server:** Vite (ESM, HMR, esbuild + Rollup)
+- ✅ **Arquitetura:** SPA modular com lazy loading por rota
+- ✅ **Performance Core:**
+  - Monitor de Web Vitals (LCP, FID, CLS, FCP, TTFB)
+  - Lazy loading universal (img, vídeo, iframe)
+  - Otimizador de imagens (WebP, tamanhos responsivos)
+  - Prefetch inteligente de rotas/API
+- ✅ **PWA:**
+  - Manifest + Service Worker
+  - Estratégias de cache (Cache First / Network First)
+  - Offline fallback
+- ✅ **CSS:**
+  - Design Tokens via CSS Variables
+  - Grid System próprio (12 colunas)
+  - Dark Mode (`data-theme`)
+  - Classes utilitárias + componentes
 
 Este repositório serve como portfólio técnico para demonstrar engenharia de software avançada sem expor regras de negócio sensíveis.
 
