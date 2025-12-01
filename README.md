@@ -33,6 +33,25 @@ Este repositório serve como portfólio técnico para demonstrar engenharia de s
 
 ---
 
+## 📊 Análise de Decisão: Por que Vanilla TypeScript?
+
+Ao optar por **não** utilizar frameworks tradicionais (React, Angular, Vue), esta arquitetura assume **trade-offs conscientes** baseados em métricas de engenharia e objetivos de negócio.
+
+| Métrica                      | Frameworks SPA comuns (React/Angular/Vue)          | Esta arquitetura (Vanilla TS + Vite)                | Impacto / Ganho                                                |
+| :--------------------------- | :------------------------------------------------- | :-------------------------------------------------- | :------------------------------------------------------------- |
+| **📦 Bundle inicial (Gzip)** | 150KB ~ 300KB só de overhead do framework          | **\< 50KB (Core)** e **\< 200KB total** (gzipped)   | Até ~70–80% menos JS inicial → carregamento muito mais rápido em 4G |
+| **⚙️ Controle de engenharia**| ~50% (parte da lógica escondida no framework)      | **100% (domínio total do fluxo)**                   | Sem "mágica": menos surpresas ao atualizar dependências de terceiros |
+| **⏱️ Tempo de setup**        | Rápido (CLI, roteador e store prontos)             | **≈ +30% de esforço inicial** para construir o core | Mais trabalho no começo, mas manutenção e debug muito mais previsíveis |
+
+> 💡 **Filosofia do projeto**
+>
+> *“Eu troquei a **comodidade** inicial do desenvolvimento (setup rápido com framework)
+> pela **excelência na entrega final**. O resultado é uma aplicação que carrega
+> quase instantaneamente, com controle absoluto sobre cada ciclo de renderização
+> e cada byte trafegado.”*
+
+---
+
 ## 🛠️ Stack Tecnológico
 
 | Categoria | Tecnologias |
@@ -61,7 +80,8 @@ src/
 
 ⚡ Destaques Técnicos
 1. Vite + Code Splitting Manual
-O arquivo vite.config.ts foi customizado para superar as configurações padrão, implementando estratégias manuais de divisão de código (chunks):
+O arquivo vite.config.ts foi customizado para superar as configurações padrão,
+ implementando estratégias manuais de divisão de código (chunks):
 
 vendor-core: Router, Http Client, State Management.
 
@@ -118,7 +138,8 @@ src/styles/README-CSS-USAGE.md - Sistema de Design, Grid e Tokens.
 ❓ F.A.Q.
 Este repositório roda a aplicação completa?
 
-Não necessariamente. Como o objetivo é demonstrar decisões de arquitetura e padrões de código, as partes contendo regras de negócio proprietárias e dados sensíveis não estão incluídas.
+Não necessariamente. Como o objetivo é demonstrar decisões de arquitetura e padrões de código,
+as partes contendo regras de negócio proprietárias e dados sensíveis não estão incluídas.
 
 Para que serve este repositório?
 
@@ -129,6 +150,7 @@ Referência: Base de conhecimento para boas práticas em Vite e TypeScript.
 Auditoria: Transparência sobre a qualidade técnica do produto.
 
 👨‍💻 Autor
-Samuel Sereja Silva Contador & Desenvolvedor de Software Especialista em unir regras de negócio complexas com engenharia de software de alta performance.
+Samuel Sereja Silva Contador & Desenvolvedor de Software Especialista em unir
+ regras de negócio complexas com engenharia de software de alta performance.
 
 Documentação gerada em Dezembro de 2025.
