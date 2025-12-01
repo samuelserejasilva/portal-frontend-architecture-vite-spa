@@ -1,7 +1,6 @@
 # 🚀 Portal Auditoria - SPA Architecture Showcase
 
-![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
-[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://github.com/samuelserejasilva/portal-frontend-architecture-vite-spa/blob/main/src/main.ts)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://github.com/samuelserejasilva/portal-frontend-architecture-vite-spa/blob/main/main.ts)
 ![Performance](https://img.shields.io/badge/Lighthouse-100-success?style=for-the-badge&logo=lighthouse&logoColor=white)
 ![Status](https://img.shields.io/badge/Status-Showcase-orange?style=for-the-badge)
 
