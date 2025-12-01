@@ -450,7 +450,7 @@ fetch('/api/empresas', {
 | 📖 Índice de Documentação | [docs/README.md](docs/README.md) |
 | 🌐 API REST Completa | [docs/api-documentation.md](docs/api-documentation.md) |
 | 📘 Guia de Implementação | [docs/guides/IMPLEMENTATION_GUIDE.md](docs/guides/IMPLEMENTATION_GUIDE.md) |
-| 🏗️ Estrutura do Projeto | [docs/architecture/PROJECT_STRUCTURE.md](docs/architecture/PROJECT_STRUCTURE.md) |
+| 🏗️ Estrutura do Projeto | [ESTRUTURA-FRONTEND.md](ESTRUTURA-FRONTEND.md) |
 | 🎨 Guia de CSS | [src/styles/README-CSS-USAGE.md](src/styles/README-CSS-USAGE.md) |
 | 📊 Estado Atual | [docs/RELATORIO-TECNICO-ESTADO-ATUAL.md](docs/RELATORIO-TECNICO-ESTADO-ATUAL.md) |
 
