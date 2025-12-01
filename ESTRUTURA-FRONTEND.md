@@ -447,7 +447,7 @@ fetch('/api/empresas', {
 
 | Documento | Link |
 |-----------|------|
-| 📖 Índice de Documentação | [docs/README.md](docs/README.md) |
+| 📖 Índice de Documentação | [README.md](README.md) |
 | 🌐 API REST Completa | [docs/api-documentation.md](docs/api-documentation.md) |
 | 📘 Guia de Implementação | [docs/guides/IMPLEMENTATION_GUIDE.md](docs/guides/IMPLEMENTATION_GUIDE.md) |
 | 🏗️ Estrutura do Projeto | [ESTRUTURA-FRONTEND.md](ESTRUTURA-FRONTEND.md) |
