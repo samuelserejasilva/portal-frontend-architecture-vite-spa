@@ -2,7 +2,7 @@
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://github.com/samuelserejasilva/portal-frontend-architecture-vite-spa/blob/main/main.ts)
 [![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://github.com/samuelserejasilva/portal-frontend-architecture-vite-spa/blob/main/vite.config.ts)
-[![Performance](https://img.shields.io/badge/Lighthouse-100-success?style=for-the-badge&logo=lighthouse&logoColor=white)]()
+[![Performance](https://img.shields.io/badge/Lighthouse-100-success?style=for-the-badge&logo=lighthouse&logoColor=white)](https://www.youtube.com/watch?v=TQjHFESNX30)
 [![Status](https://img.shields.io/badge/Status-Showcase-orange?style=for-the-badge)](https://github.com/samuelserejasilva/portal-frontend-architecture-vite-spa/blob/main/ESTRUTURA-FRONTEND.md)
 
 Showcase de **Arquitetura SPA de Alta Performance** (Vanilla TypeScript + Vite) desenvolvida para o **Portal Auditoria 2.0**.
@@ -169,4 +169,9 @@ Auditoria: Transparência sobre a qualidade técnica do produto.
 Samuel Sereja Silva Contador & Desenvolvedor de Software Especialista em unir
  regras de negócio complexas com engenharia de software de alta performance.
 
+GitHub: @samuelserejasilva
+
+LinkedIn: https://www.linkedin.com/in/portalauditoria/
+
+E-mail: samuel@portalauditoria.com.br
 Documentação gerada em Dezembro de 2025.
