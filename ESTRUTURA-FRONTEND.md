@@ -13,7 +13,7 @@ Front-end moderno construído **sem frameworks**, focado em **máxima performanc
 
 **Principais Características:**
 - ✅ TypeScript strict mode
-- ✅ SPA Router customizado com lazy loading
+- ✅ SPA Router customizado com Code Splitting
 - ✅ Vite como bundler
 - ✅ Web Vitals otimizados (LCP, FID, CLS)
 - ✅ Bundle < 200KB (gzipped)
@@ -77,7 +77,7 @@ portal-auditoria-performance/
 │   │   │
 │   │   └── 📂 performance/          # 🔥 Performance Core
 │   │       ├── PerformanceMonitor.ts    # Web Vitals (LCP, FID, CLS)
-│   │       ├── LazyLoader.ts            # Lazy loading universal
+│   │       ├── LazyLoader.ts            # Code Splitting universal
 │   │       ├── ImageOptimizer.ts        # Otimização de imagens
 │   │       └── ResourcePrefetcher.ts    # Prefetch inteligente
 │   │
@@ -200,7 +200,7 @@ export class App {
 
 ### 3️⃣ **Sistema de Rotas (`Router.ts`)**
 
-- **Lazy loading** automático de páginas
+- **Code Splitting** automático de páginas
 - **AuthGuard** para proteção de rotas
 - **Hash-based routing** (`#/path`)
 - **Navegação programática**
@@ -223,7 +223,7 @@ export class App {
 | Módulo | Função |
 |--------|--------|
 | `PerformanceMonitor.ts` | Monitora Web Vitals (LCP, FID, CLS, TTFB) |
-| `LazyLoader.ts` | Lazy loading universal (img, video, iframe) |
+| `LazyLoader.ts` | Code Splitting universal (img, video, iframe) |
 | `ImageOptimizer.ts` | Otimiza imagens (resize, compress, WebP) |
 | `ResourcePrefetcher.ts` | Prefetch inteligente (rotas, API, imagens) |
 
@@ -541,13 +541,13 @@ npm run build
 ## ✨ Features Implementadas
 
 - ✅ TypeScript strict mode
-- ✅ SPA Router com lazy loading
+- ✅ SPA Router com Code Splitting
 - ✅ AuthGuard para proteção de rotas
 - ✅ HTTP Client com interceptors
 - ✅ State management reativo (Proxy)
 - ✅ Logger centralizado com buffer
 - ✅ Web Vitals monitoring (LCP, FID, CLS)
-- ✅ Lazy loading universal (img, video, iframe)
+- ✅ Code Splitting universal (img, video, iframe)
 - ✅ Image optimization (resize, compress, WebP)
 - ✅ Resource prefetching inteligente
 - ✅ Code splitting por rota
