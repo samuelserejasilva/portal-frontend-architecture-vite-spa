@@ -1,19 +1,28 @@
-# 📂 Estrutura Completa do Front-End - Portal Auditoria 2.0
+# 📂 Estrutura Completa do Front-End - Portal Auditoria
 
-**Versão:** 2.0.0
+## Plataforma SaaS Multi-tenant, API-first
+
+**Versão:** 2.1.0
 **Tecnologia:** TypeScript Vanilla + Vite
 **Arquitetura:** SPA (Single Page Application) com Performance Otimizada
-**Data de Documentação:** 2025-12-01
+**Última Atualização:** 06/12/2025
 
 ---
 
 ## 🎯 Visão Geral
 
-Front-end moderno construído **sem frameworks**, focado em **máxima performance** e **otimizações avançadas**.
+**Plataforma SaaS multi-tenant, API-first** para gestão de escritórios de contabilidade e auditoria.
 
-**Principais Características:**
+Front-end moderno construído **sem frameworks**, focado em **máxima performance** e **otimizações avançadas**, consumindo uma API RESTful padronizada em `/api/v1`.
+
+### **Arquitetura da Plataforma:**
+- 🏢 **Multi-tenant**: Isolamento completo de dados por tenant (empresa_id)
+- 🔌 **API-first**: API RESTful padronizada em `/api/v1`
+- 🚀 **SaaS-ready**: Autenticação JWT, roles hierárquicos, pronto para escalar
+
+### **Frontend (SPA):**
 - ✅ TypeScript strict mode
-- ✅ SPA Router customizado com Code Splitting
+- ✅ SPA Router customizado com lazy loading
 - ✅ Vite como bundler
 - ✅ Web Vitals otimizados (LCP, FID, CLS)
 - ✅ Bundle < 200KB (gzipped)
@@ -22,27 +31,123 @@ Front-end moderno construído **sem frameworks**, focado em **máxima performanc
 
 ---
 
+## 🔄 Fluxo de Integração Completo (Frontend ↔ Backend)
+
+### Como tudo funciona junto:
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│ 1. Usuário acessa rota /admin/dashboard                             │
+└──────────────────────┬──────────────────────────────────────────────┘
+                       ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│ 2. Router verifica se existe guard (AuthGuard)                      │
+│    → AuthGuard.canActivate() valida:                                │
+│      - Token existe no AuthStore?                                   │
+│      - Token é válido? (JwtUtils.decode)                            │
+│      - Role do usuário permite acesso?                              │
+└──────────────────────┬──────────────────────────────────────────────┘
+                       ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│ 3. Lazy loading da página (import dinâmico)                         │
+│    → router.navigate() carrega o chunk apenas quando necessário     │
+└──────────────────────┬──────────────────────────────────────────────┘
+                       ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│ 4. Página renderiza e chama serviço                                 │
+│    Ex: dashboardService.getMetrics()                                │
+└──────────────────────┬──────────────────────────────────────────────┘
+                       ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│ 5. Serviço usa HttpClient                                           │
+│    httpClient.get('/api/v1/dashboard/metrics')                      │
+└──────────────────────┬──────────────────────────────────────────────┘
+                       ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│ 6. AuthInterceptor injeta token                                     │
+│    headers: { 'Authorization': 'Bearer eyJhbG...' }                 │
+└──────────────────────┬──────────────────────────────────────────────┘
+                       ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│ 7. Requisição HTTP para backend                                     │
+│    → Backend valida JWT                                             │
+│    → Backend processa request                                       │
+│    → Backend retorna JSON                                           │
+└──────────────────────┬──────────────────────────────────────────────┘
+                       ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│ 8. ErrorInterceptor trata resposta                                  │
+│    → 401? → Faz logout e redireciona para /login                    │
+│    → 403? → Redireciona para /unauthorized                          │
+│    → 500? → Mostra erro via UI.showError()                          │
+│    → 200? → Retorna dados para o serviço                            │
+└──────────────────────┬──────────────────────────────────────────────┘
+                       ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│ 9. Página recebe dados e atualiza UI                                │
+│    → UI.showLoading() (durante requisição)                          │
+│    → UI.hideLoading() (após receber dados)                          │
+│    → Renderiza dados na tela                                        │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### Exemplo Prático:
+
+```typescript
+// 1. Definição de rota com guard (config/routes.config.ts)
+{
+  path: '/admin/dashboard',
+  component: () => import('@pages/admin/dashboard/DashboardPage'),
+  guard: AuthGuard  // ← Validação automática
+}
+
+// 2. Página usa service (pages/admin/dashboard/DashboardPage.ts)
+import { dashboardService } from '@services/dashboard.service';
+import { showLoading, hideLoading, showError } from '@core/ui';
+
+async render() {
+  try {
+    showLoading('Carregando métricas...');
+    const metrics = await dashboardService.getMetrics();
+    hideLoading();
+    return this.renderMetrics(metrics);
+  } catch (error) {
+    hideLoading();
+    showError('Erro ao carregar métricas');
+  }
+}
+
+// 3. Service usa HttpClient (services/dashboard.service.ts)
+import { httpClient } from '@core/http/HttpClient';
+
+async getMetrics() {
+  // Token injetado automaticamente pelo AuthInterceptor
+  return httpClient.get<MetricsDTO>('/api/v1/dashboard/metrics');
+}
+
+// 4. HttpClient faz requisição com interceptors
+// → AuthInterceptor: adiciona 'Authorization: Bearer {token}'
+// → ErrorInterceptor: trata erros automaticamente
+// → Retorna dados tipados (MetricsDTO)
+```
+
+---
+
 ## 📁 Estrutura de Diretórios
 
 ```
-portal-auditoria-performance/
+frontend/
 │
 ├── 📄 index.html                    # Entry point HTML
 ├── 📄 package.json                  # Dependências e scripts
 ├── 📄 tsconfig.json                 # Configuração TypeScript
-├── 📄 vite.config.ts                # Configuração Vite (bundler)
-├── 📄 README.md                     # Documentação principal
-├── 📄 FASE-1-COMPLETA.md           # Checklist de implementação
-├── 📄 ESTRUTURA-FRONTEND-COMPLETA.md # Este arquivo
+├── 📄 vite.config.ts                # Configuração Vite
 │
-├── 📂 public/                       # Arquivos estáticos (copiados para dist)
-│   ├── favicon.ico
-│   ├── robots.txt
-│   ├── manifest.json               # PWA manifest
-│   ├── sw.js                       # Service Worker
-│   └── fonts/                      # Fontes locais (performance)
-│       ├── inter-regular.woff2
-│       └── Inter-Bold.woff2
+├── 📂 public/                       # Arquivos estáticos
+│   ├── fonts/                      # Fontes locais (performance)
+│   │   ├── inter-regular.woff2
+│   │   └── Inter-Bold.woff2
+│   └── images/                     # Imagens estáticas
 │
 ├── 📂 src/                          # Código-fonte principal
 │   │
@@ -50,47 +155,58 @@ portal-auditoria-performance/
 │   ├── 📄 app.ts                    # Classe principal App
 │   │
 │   ├── 📂 config/                   # Configurações
-│   │   ├── api.config.ts           # Configuração de API (ENV)
-│   │   └── routes.config.ts        # Definição de rotas
+│   │   ├── api.config.ts           # Configuração de API (/api/v1)
+│   │   ├── routes.config.ts        # Definição de rotas da SPA
+│   │   └── features.config.ts      # Feature flags
 │   │
-│   ├── 📂 core/                     # Core da aplicação (sistemas)
+│   ├── 📂 core/                     # Core da aplicação
+│   │   │
+│   │   ├── 📂 auth/                 # Sistema de autenticação
+│   │   │   └── JwtUtils.ts         # Utilitários JWT
 │   │   │
 │   │   ├── 📂 router/               # Sistema de rotas (SPA)
-│   │   │   ├── Router.ts           # Router principal
-│   │   │   ├── Route.ts            # Classe de rota
-│   │   │   └── guards/             # Guards de rota
-│   │   │       └── AuthGuard.ts    # Proteção de rotas autenticadas
+│   │   │   ├── Router.ts           # Router com lazy loading
+│   │   │   ├── Route.ts            # Definição de rota
+│   │   │   └── guards/
+│   │   │       └── AuthGuard.ts    # Proteção de rotas
 │   │   │
 │   │   ├── 📂 http/                 # Cliente HTTP
-│   │   │   ├── HttpClient.ts       # Wrapper do fetch
-│   │   │   └── interceptors/       # Interceptors HTTP
+│   │   │   ├── HttpClient.ts       # Wrapper do fetch API
+│   │   │   └── interceptors/
 │   │   │       ├── AuthInterceptor.ts    # Injeta token
-│   │   │       └── ErrorInterceptor.ts   # Trata erros globais
+│   │   │       └── ErrorInterceptor.ts   # Trata erros HTTP
 │   │   │
 │   │   ├── 📂 state/                # Gerenciamento de estado
 │   │   │   ├── Store.ts            # Store genérica (Proxy)
 │   │   │   └── AuthStore.ts        # Store de autenticação
 │   │   │
+│   │   ├── 📂 ui/                   # Sistema de UI Core
+│   │   │   ├── index.ts            # API unificada de UI
+│   │   │   ├── feedback.ts         # Loading global
+│   │   │   ├── alert.ts            # Alertas/erros
+│   │   │   └── toast.ts            # Toast notifications
+│   │   │
 │   │   ├── 📂 logger/               # Sistema de logs
 │   │   │   ├── Logger.ts           # Logger centralizado
-│   │   │   └── FrontendErrorReporter.ts # Reporta erros
+│   │   │   └── FrontendErrorReporter.ts # Reporta erros ao backend
 │   │   │
-│   │   └── 📂 performance/          # 🔥 Performance Core
-│   │       ├── PerformanceMonitor.ts    # Web Vitals (LCP, FID, CLS)
-│   │       ├── LazyLoader.ts            # Code Splitting universal
+│   │   └── 📂 performance/          # Performance Core
+│   │       ├── PerformanceMonitor.ts    # Web Vitals
+│   │       ├── LazyLoader.ts            # Lazy loading universal
 │   │       ├── ImageOptimizer.ts        # Otimização de imagens
 │   │       └── ResourcePrefetcher.ts    # Prefetch inteligente
 │   │
 │   ├── 📂 services/                 # Camada de serviços (API)
 │   │   ├── auth.service.ts         # Autenticação
-│   │   ├── layout.service.ts       # Header/Footer
-│   │   └── auth.service.example.ts # Exemplo de serviço
+│   │   ├── layout.service.ts       # Layout
+│   │   ├── dashboard.service.ts    # Dashboard
+│   │   └── invite.service.ts       # Convites
 │   │
 │   ├── 📂 models/                   # Tipos e DTOs
 │   │   └── dto/
-│   │       ├── index.ts            # Exportações
-│   │       ├── api.types.ts        # Tipos gerados (OpenAPI)
-│   │       ├── auth.dto.ts         # DTOs de autenticação
+│   │       ├── index.ts            # Re-exportações
+│   │       ├── api.types.ts        # Tipos do OpenAPI
+│   │       ├── auth.dto.ts         # DTOs de auth
 │   │       └── usuario.dto.ts      # DTOs de usuário
 │   │
 │   ├── 📂 pages/                    # Páginas (lazy loaded)
@@ -100,72 +216,46 @@ portal-auditoria-performance/
 │   │   │   │   └── HomePage.ts
 │   │   │   ├── login/
 │   │   │   │   └── LoginPage.ts
-│   │   │   ├── register/
-│   │   │   │   └── RegisterPage.ts
-│   │   │   ├── forgot-password/
-│   │   │   │   └── ForgotPasswordPage.ts
-│   │   │   ├── servicos/
-│   │   │   │   └── ServicosPage.ts
-│   │   │   └── blog/
-│   │   │       ├── BlogListPage.ts
-│   │   │       └── BlogDetailPage.ts
+│   │   │   └── register/
+│   │   │       └── RegisterPage.ts
 │   │   │
 │   │   ├── 📂 admin/                # Páginas administrativas
 │   │   │   ├── dashboard/
-│   │   │   │   └── DashboardPage.ts
+│   │   │   │   ├── DashboardPage.ts
+│   │   │   │   ├── SuperAdminDashboardPage.ts
+│   │   │   │   ├── CompanyAdminDashboardPage.ts
+│   │   │   │   └── UserDashboardPage.ts
+│   │   │   │
 │   │   │   ├── usuarios/
 │   │   │   │   ├── UsuarioListPage.ts
 │   │   │   │   └── UsuarioFormPage.ts
-│   │   │   ├── empresas/
-│   │   │   │   ├── EmpresaListPage.ts
-│   │   │   │   └── EmpresaFormPage.ts
-│   │   │   ├── posts/
-│   │   │   │   ├── PostListPage.ts
-│   │   │   │   └── PostEditorPage.ts
-│   │   │   ├── servicos/
-│   │   │   │   └── ServicoListPage.ts
-│   │   │   └── audit/
-│   │   │       └── AuditLogPage.ts
+│   │   │   │
+│   │   │   └── empresas/
+│   │   │       ├── EmpresaListPage.ts
+│   │   │       └── EmpresaFormPage.ts
 │   │   │
 │   │   └── 📂 errors/               # Páginas de erro
-│   │       ├── NotFoundPage.ts     # 404
-│   │       └── UnauthorizedPage.ts # 401/403
+│   │       ├── NotFoundPage.ts
+│   │       └── UnauthorizedPage.ts
 │   │
 │   ├── 📂 components/               # Componentes reutilizáveis
 │   │   ├── layout/
-│   │   │   ├── Header.ts           # Cabeçalho
-│   │   │   └── Footer.ts           # Rodapé
+│   │   │   ├── Header.ts
+│   │   │   └── Footer.ts
 │   │   └── media/
-│   │       └── LazyImage.ts        # Componente de imagem lazy
+│   │       └── LazyImage.ts
 │   │
 │   └── 📂 styles/                   # Estilos CSS
 │       ├── main.css                # Entry point CSS
 │       ├── variables.css           # Design tokens
 │       ├── utilities.css           # Classes utilitárias
-│       ├── components.css          # Estilos de componentes
-│       └── README-CSS-USAGE.md     # Guia de uso CSS
+│       └── components.css          # Estilos de componentes
 │
-├── 📂 docs/                         # Documentação adicional
-│   ├── README.md                   # Índice de documentação
-│   ├── api-documentation.md        # Documentação da API
-│   ├── RELATORIO-TECNICO-ESTADO-ATUAL.md
-│   ├── guides/
-│   │   └── IMPLEMENTATION_GUIDE.md
-│   └── architecture/
-│       └── PROJECT_STRUCTURE.md
-│
-└── 📂 dist/                         # Build de produção (gerado)
-    ├── index.html                  # HTML com assets injetados
+└── 📂 dist/                         # Build de produção
+    ├── index.html
     └── assets/
         ├── js/                     # JavaScript minificado + chunks
-        │   ├── main-[hash].js
-        │   ├── vendor-core-[hash].js
-        │   ├── vendor-performance-[hash].js
-        │   ├── auth-[hash].js
-        │   └── admin-[hash].js
-        ├── css/                    # CSS minificado
-        │   └── main-[hash].css
-        └── [ext]/                  # Outros assets (imagens, fontes)
+        └── css/                    # CSS minificado
 ```
 
 ---
@@ -175,14 +265,13 @@ portal-auditoria-performance/
 ### 1️⃣ **Entry Point (`main.ts`)**
 
 ```typescript
-import './styles/main.css';        // CSS via Vite
-import { App } from './app';       // Classe principal
+import './styles/main.css';
+import { App } from './app';
 
-// Inicializa quando DOM estiver pronto
 async function initApp() {
-  await mountShell();              // Header + Footer
+  await mountShell();    // Header + Footer
   const app = new App();
-  await app.init();                // Inicializa sistemas
+  await app.init();      // Inicializa sistemas
 }
 ```
 
@@ -192,40 +281,91 @@ async function initApp() {
 export class App {
   async init(): Promise<void> {
     // 1. Error reporter
-    // 2. Registra rotas
-    // 3. Inicializa router
+    // 2. Registra rotas com guards
+    // 3. Inicializa router com lazy loading
+    // 4. Configura interceptors HTTP
   }
 }
 ```
 
 ### 3️⃣ **Sistema de Rotas (`Router.ts`)**
 
-- **Code Splitting** automático de páginas
-- **AuthGuard** para proteção de rotas
-- **Hash-based routing** (`#/path`)
-- **Navegação programática**
+- ✅ Lazy loading automático de páginas
+- ✅ AuthGuard para proteção de rotas
+- ✅ Hash-based routing (`#/path`)
+- ✅ Navegação programática
+- ✅ Imports dinâmicos para code splitting
+
+**Exemplo:**
+```typescript
+import { router } from '@core/router/Router';
+
+router.navigate('/admin/dashboard');
+
+// Rota protegida
+{
+  path: '/admin/dashboard',
+  component: () => import('./pages/admin/dashboard/DashboardPage'),
+  guard: AuthGuard
+}
+```
 
 ### 4️⃣ **HTTP Client (`HttpClient.ts`)**
 
-- Wrapper do `fetch` com interceptors
-- Injeção automática de token (AuthInterceptor)
-- Tratamento global de erros (ErrorInterceptor)
-- Suporte a upload de arquivos
+Sistema centralizado de comunicação com `/api/v1`:
+
+- ✅ Wrapper do `fetch` com interceptors
+- ✅ AuthInterceptor: injeta token automaticamente
+- ✅ ErrorInterceptor: trata erros HTTP (401, 403, 500)
+- ✅ Suporte a upload de arquivos
+- ✅ Tipagem forte com DTOs
+- ✅ Retry automático
+
+**Exemplo:**
+```typescript
+import { httpClient } from '@core/http/HttpClient';
+
+const empresas = await httpClient.get<EmpresaDTO[]>('/api/v1/empresas');
+
+const nova = await httpClient.post<EmpresaDTO>('/api/v1/empresas', {
+  razaoSocial: 'Empresa Exemplo',
+  cnpj: '00.000.000/0001-00'
+});
+```
 
 ### 5️⃣ **State Management (`Store.ts`)**
 
-- Store reativa usando **Proxy**
-- Subscribe/unsubscribe para mudanças
-- **AuthStore** específica para autenticação
+- ✅ Store reativa usando Proxy
+- ✅ Subscribe/unsubscribe
+- ✅ AuthStore para autenticação
+- ✅ Sincronização com localStorage
 
-### 6️⃣ **Performance Core**
+**Exemplo:**
+```typescript
+import { authStore } from '@core/state/AuthStore';
 
-| Módulo | Função |
-|--------|--------|
-| `PerformanceMonitor.ts` | Monitora Web Vitals (LCP, FID, CLS, TTFB) |
-| `LazyLoader.ts` | Code Splitting universal (img, video, iframe) |
-| `ImageOptimizer.ts` | Otimiza imagens (resize, compress, WebP) |
-| `ResourcePrefetcher.ts` | Prefetch inteligente (rotas, API, imagens) |
+authStore.subscribe((state) => {
+  console.log('User:', state.user);
+  console.log('Token:', state.token);
+});
+
+authStore.setState({ user: userData, token: jwtToken });
+```
+
+### 6️⃣ **UI Core System**
+
+Sistema unificado de feedback:
+
+```typescript
+import { showLoading, hideLoading, showError, showSuccess } from '@core/ui';
+
+showLoading('Carregando...');
+// ... operação
+hideLoading();
+
+showError('Erro ao carregar dados');
+showSuccess('Operação realizada com sucesso!');
+```
 
 ---
 
@@ -234,17 +374,13 @@ export class App {
 ### **Fluxo de Carregamento:**
 
 ```
-index.html
+index.html → <script src="/src/main.ts">
     ↓
-<script src="/src/main.ts">
-    ↓
-import './styles/main.css'  ← Importado via TypeScript
+import './styles/main.css'
     ↓
 Vite processa:
   - DEV:  Injeta CSS via <style> (HMR)
   - PROD: Gera main-[hash].css minificado
-    ↓
-dist/index.html (com <link> injetado automaticamente)
 ```
 
 ### **Arquivos CSS:**
@@ -256,11 +392,9 @@ dist/index.html (com <link> injetado automaticamente)
 | `utilities.css` | Grid system + classes utilitárias |
 | `components.css` | Componentes (botões, cards, navegação) |
 
-**Documentação completa:** [README-CSS-USAGE.md](README-CSS-USAGE.md)
-
 ---
 
-## 📦 Code Splitting (Manual Chunks)
+## 📦 Code Splitting
 
 Configurado em `vite.config.ts`:
 
@@ -269,21 +403,19 @@ manualChunks: {
   'vendor-core': [
     './src/core/router/Router',
     './src/core/http/HttpClient',
-    './src/core/state/Store',
-    './src/core/logger/Logger',
+    './src/core/state/Store'
   ],
   'vendor-performance': [
     './src/core/performance/PerformanceMonitor',
-    './src/core/performance/LazyLoader',
-    './src/core/performance/ImageOptimizer',
+    './src/core/performance/LazyLoader'
   ],
   'auth': [
     './src/services/auth.service',
-    './src/pages/public/login/LoginPage',
+    './src/pages/public/login/LoginPage'
   ],
   'admin': [
-    './src/pages/admin/dashboard/DashboardPage',
-  ],
+    './src/pages/admin/dashboard/DashboardPage'
+  ]
 }
 ```
 
@@ -299,13 +431,10 @@ manualChunks: {
 | Script | Descrição |
 |--------|-----------|
 | `npm run dev` | Dev server (http://localhost:3000) |
-| `npm run start` | Dev server na porta 8000 (--host) |
-| `npm run build` | Build de produção (TypeScript + Vite) |
+| `npm run build` | Build de produção |
 | `npm run preview` | Preview do build |
 | `npm run type-check` | Verifica tipos TypeScript |
-| `npm run analyze` | Análise de bundle (stats.html) |
-| `npm run lighthouse` | Testa performance (Lighthouse) |
-| `npm run generate:types` | Gera tipos do OpenAPI |
+| `npm run analyze` | Análise de bundle |
 
 ---
 
@@ -317,32 +446,18 @@ manualChunks: {
   "compilerOptions": {
     "target": "ES2020",
     "module": "ESNext",
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "strict": true,
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
       "@core/*": ["./src/core/*"],
       "@services/*": ["./src/services/*"],
       "@models/*": ["./src/models/*"],
-      "@pages/*": ["./src/pages/*"],
-      "@components/*": ["./src/components/*"],
-      "@config/*": ["./src/config/*"]
+      "@pages/*": ["./src/pages/*"]
     }
   }
 }
 ```
-
-### **vite.config.ts - Principais Features**
-- ✅ Path aliases (@core, @services, etc)
-- ✅ Code splitting manual
-- ✅ CSS minification
-- ✅ Gzip + Brotli compression
-- ✅ PWA + Service Worker
-- ✅ Bundle analyzer
-- ✅ HMR (Hot Module Replacement)
 
 ---
 
@@ -371,7 +486,8 @@ manualChunks: {
 - `/blog/:slug` - Detalhe de post
 
 ### **Protegidas (requer autenticação):**
-- `/admin/dashboard` - Dashboard
+- `/admin/dashboard` - Dashboard (multi-role)
+- `/admin/profile` - Perfil do usuário
 - `/admin/usuarios` - Gerenciar usuários
 - `/admin/empresas` - Gerenciar empresas
 - `/admin/posts` - Gerenciar posts
@@ -397,176 +513,74 @@ authStore.subscribe((state) => {
 {
   path: '/admin/dashboard',
   component: () => import('./pages/admin/dashboard/DashboardPage'),
-  guard: AuthGuard  // ← Redireciona para /login se não autenticado
+  guard: AuthGuard
 }
 
-// AuthInterceptor (Injeta token)
-fetch('/api/empresas', {
+// AuthInterceptor (Injeta token automaticamente)
+fetch('/api/v1/empresas', {
   headers: {
-    'Authorization': `Bearer ${token}`  // ← Automático
+    'Authorization': `Bearer ${token}`  // Automático
   }
 });
 ```
 
 ---
 
-## 📱 PWA (Progressive Web App)
+## 👥 Sistema Multi-Role de Dashboards
 
-### **Manifest.json**
-```json
-{
-  "name": "Portal Auditoria",
-  "short_name": "Auditoria",
-  "theme_color": "#0066cc",
-  "background_color": "#ffffff",
-  "display": "standalone"
-}
-```
+### **Super Admin Dashboard**
+- Visão completa do sistema
+- Gestão de empresas
+- Gestão global de usuários
+- Analytics avançados
 
-### **Service Worker (sw.js)**
-- **Cache First**: Assets estáticos, imagens, fontes
-- **Network First**: API, navegação
-- **Offline fallback**: Página offline
+### **Company Admin Dashboard**
+- Visão da empresa
+- Gestão de usuários da empresa
+- Sistema de convites
+- Configurações da empresa
 
----
+### **User Dashboard**
+- Visão pessoal
+- Edição de perfil
+- Histórico de atividades
 
-## 🎯 Próximos Passos
-
-1. ✅ Setup e configuração completa
-2. ✅ Performance core implementado
-3. ✅ Router + Guards + Code Splitting
-4. ✅ HTTP Client + Interceptors
-5. 🔄 Implementar páginas administrativas
-6. 🔄 Implementar componentes UI
-7. 🔄 Testes de performance (Lighthouse)
-8. 🔄 Deploy e CI/CD
-
----
-
-## 📚 Documentação Adicional
-
-| Documento | Link |
-|-----------|------|
-| 📖 Índice de Documentação | [README.md](README.md) |
-| 🌐 API REST Completa | [docs/api-documentation.md](docs/api-documentation.md) |
-| 📘 Guia de Implementação | [docs/guides/IMPLEMENTATION_GUIDE.md](docs/guides/IMPLEMENTATION_GUIDE.md) |
-| 🏗️ Estrutura do Projeto | [ESTRUTURA-FRONTEND.md](ESTRUTURA-FRONTEND.md) |
-| 🎨 Guia de CSS | [README-CSS-USAGE.md](README-CSS-USAGE.md) |
-| 📊 Estado Atual | [ESTRUTURA-FRONTEND.md](ESTRUTURA-FRONTEND.md) |
-
----
-
-## 🤝 Convenções de Código
-
-### **Nomenclatura:**
-- **Arquivos:** PascalCase para classes (`LoginPage.ts`)
-- **Variáveis:** camelCase (`authService`)
-- **Constantes:** UPPER_CASE (`API_BASE_URL`)
-- **CSS Classes:** kebab-case (`btn-primary`)
-
-### **Estrutura de Página:**
-```typescript
-export class HomePage {
-  private container: HTMLElement;
-
-  constructor() {
-    this.container = document.createElement('div');
-  }
-
-  async render(): Promise<string> {
-    return `<div>...</div>`;
-  }
-
-  mount(): void {
-    // Lógica de montagem
-  }
-
-  unmount(): void {
-    // Cleanup
-  }
-}
-```
-
-### **Imports:**
-```typescript
-// Alias paths
-import { Router } from '@core/router/Router';
-import { authService } from '@services/auth.service';
-import { LoginDTO } from '@models/dto/auth.dto';
-```
-
----
-
-## 🐛 Debug e Desenvolvimento
-
-### **Console do Navegador:**
-```javascript
-// Ver Web Vitals
-performanceMonitor.getSummary()
-
-// Ver métricas detalhadas
-performanceMonitor.getMetrics()
-
-// Ver estado de autenticação
-authStore.getState()
-
-// Ver fila de prefetch
-prefetcher.getStats()
-```
-
-### **Vite Dev Tools:**
-- Hot Module Replacement (HMR)
-- Sourcemaps habilitados
-- CSS sourcemaps
-- Error overlay
-
----
-
-## 📈 Análise de Bundle
-
-```bash
-# Gera relatório visual
-npm run build
-# Abre dist/stats.html automaticamente
-```
-
-**Visualização:**
-- Tamanho de cada chunk
-- Dependências incluídas
-- Gzip vs Brotli sizes
-- Tree map interativo
+**Implementação:**
+- Roteamento dinâmico baseado em `user.role`
+- Lazy loading de cada dashboard
+- Guards de rota validam permissões
 
 ---
 
 ## ✨ Features Implementadas
 
+### **Core & Arquitetura**
 - ✅ TypeScript strict mode
-- ✅ SPA Router com Code Splitting
-- ✅ AuthGuard para proteção de rotas
+- ✅ SPA Router com lazy loading
+- ✅ AuthGuard para proteção
 - ✅ HTTP Client com interceptors
-- ✅ State management reativo (Proxy)
-- ✅ Logger centralizado com buffer
-- ✅ Web Vitals monitoring (LCP, FID, CLS)
-- ✅ Code Splitting universal (img, video, iframe)
-- ✅ Image optimization (resize, compress, WebP)
-- ✅ Resource prefetching inteligente
-- ✅ Code splitting por rota
-- ✅ Minificação (JS + CSS)
-- ✅ Tree-shaking (remove código não usado)
-- ✅ Gzip + Brotli compression
-- ✅ Service Worker (offline-first)
-- ✅ PWA completo (installable)
-- ✅ Critical CSS inline
-- ✅ Font optimization (font-display: swap)
-- ✅ Resource hints (preload, prefetch, preconnect)
+- ✅ State management reativo
+- ✅ UI Core System
+- ✅ Logger centralizado
+- ✅ Frontend Error Reporter
+
+### **Performance**
+- ✅ Web Vitals monitoring
+- ✅ Lazy loading automático
+- ✅ Image optimization
+- ✅ Resource prefetching
+- ✅ Code splitting
+- ✅ Bundle < 200KB
+
+### **Autenticação**
+- ✅ JWT completo
+- ✅ AuthStore reativa
+- ✅ AuthInterceptor
+- ✅ Guards por role
+- ✅ Sistema de convites
 
 ---
 
-**🔥 Front-end otimizado para MÁXIMA PERFORMANCE!**
-
-**Bundle size:** < 200KB gzipped
-**Lighthouse:** 95+ score
-**Web Vitals:** All green ✅
-
-**Documentação gerada em:** 2025-12-01
-**Versão:** 2.0.0
+**Versão:** 2.1.0
+**Última Atualização:** 06/12/2025
+**Arquitetura:** SaaS Multi-tenant, API-first
