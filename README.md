@@ -1,9 +1,9 @@
-# 🚀 Portal Auditoria - SPA Architecture Showcase
+ # Portal Auditoria – SPA Architecture Showcase
 
-[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://github.com/samuelserejasilva/portal-frontend-architecture-vite-spa/blob/main/main.ts)
-[![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://github.com/samuelserejasilva/portal-frontend-architecture-vite-spa/blob/main/vite.config.ts)
-[![Performance](https://img.shields.io/badge/Lighthouse-100-success?style=for-the-badge&logo=lighthouse&logoColor=white)](https://www.youtube.com/watch?v=TQjHFESNX30)
-[![Status](https://img.shields.io/badge/Status-Showcase-orange?style=for-the-badge)](https://github.com/samuelserejasilva/portal-frontend-architecture-vite-spa/blob/main/ESTRUTURA-FRONTEND.md)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-5.x-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Architecture](https://img.shields.io/badge/Architecture-SPA%20Clean%20%2B%20Modular-0F766E)](#-visao-de-arquitetura)
+[![License: MIT](https://img.shields.io/badge/license-MIT-111827)](LICENSE)
 
 Showcase de **Arquitetura SPA de Alta Performance** (Vanilla TypeScript + Vite) desenvolvida para o **Portal Auditoria 2.0**.
 
@@ -12,166 +12,189 @@ Showcase de **Arquitetura SPA de Alta Performance** (Vanilla TypeScript + Vite) 
 > Este repositório é um **estudo de arquitetura (showcase)**.
 > O código-fonte completo do produto é **proprietário / fechado**.
 >
-> **Aqui você encontra:**
-> - 🏗️ Documentação de arquitetura e decisões técnicas
+> Aqui você encontra:
+>
+> - 📄 Documentação de arquitetura e decisões técnicas
 > - ⚙️ Configurações de build otimizadas (`vite.config.ts`)
 > - ⚡ Padrões de performance e organização de pastas
-> - 🎨 Guia completo do sistema de estilos (CSS Architecture)
+> - 🎨 Guia do sistema de estilos (CSS Architecture)
 
 ---
 
-## 🎯 Objetivo
+## 📌 Objetivo
 
 Demonstrar, de forma transparente e técnica, como foi projetada uma **Single Page Application (SPA)** focada em **performance extrema**:
 
-- ✅ **Zero Frameworks Pesados:** Construído com Vanilla TypeScript.
-- ✅ **Web Vitals Otimizados:** Foco total em LCP, FID, CLS e TTI.
-- ✅ **Bundle Leve:** Tamanho final **< 200KB (gzipped)**.
-- ✅ **Acessibilidade:** Pensada para rodar fluidamente até em redes móveis (3G/4G).
-- ✅ **Bundler / Dev Server:** Vite (ESM, HMR, esbuild + Rollup)
-- ✅ **Arquitetura:** SPA modular com lazy loading por rota
-- ✅ **Performance Core:**
+- ✅ **Zero Frameworks Pesados** – Construído com Vanilla TypeScript.
+- ✅ **Web Vitals otimizados** – foco em LCP, FID, CLS, FCP, TTFB.
+- ✅ **Bundle leve** – alvo < 200KB (gzipped).
+- ✅ **Acessível em redes móveis** (3G/4G).
+- ✅ **Vite** como bundler/dev server (ESM, HMR, esbuild + Rollup).
+- ✅ Arquitetura: **SPA modular** com **lazy loading** por rota.
+- ✅ **Performance Core**:
   - Monitor de Web Vitals (LCP, FID, CLS, FCP, TTFB)
   - Lazy loading universal (img, vídeo, iframe)
   - Otimizador de imagens (WebP, tamanhos responsivos)
-  - Prefetch inteligente de rotas/API
-- ✅ **PWA:**
+  - Prefetch inteligente de rotas e APIs
+- ✅ **PWA**:
   - Manifest + Service Worker
   - Estratégias de cache (Cache First / Network First)
   - Offline fallback
-- ✅ **CSS:**
+- ✅ **CSS**:
   - Design Tokens via CSS Variables
   - Grid System próprio (12 colunas)
   - Dark Mode (`data-theme`)
   - Classes utilitárias + componentes
 
-Este repositório serve como portfólio técnico para demonstrar engenharia de software avançada sem expor regras de negócio sensíveis.
+Este repositório serve como **portfólio técnico** para demonstrar engenharia de software avançada **sem expor regras de negócio** sensíveis.
 
 ---
 
-## 📊 Análise de Decisão: Por que Vanilla TypeScript?
+## 🧠 Análise de Decisão: Por que Vanilla TypeScript?
 
 Ao optar por **não** utilizar frameworks tradicionais (React, Angular, Vue), esta arquitetura assume **trade-offs conscientes** baseados em métricas de engenharia e objetivos de negócio.
 
-| Métrica                      | Frameworks SPA comuns (React/Angular/Vue)          | Esta arquitetura (Vanilla TS + Vite)                | Impacto / Ganho                                                |
-| :--------------------------- | :------------------------------------------------- | :-------------------------------------------------- | :------------------------------------------------------------- |
-| **📦 Bundle inicial (Gzip)** | 150KB ~ 300KB só de overhead do framework          | **\< 50KB (Core)** e **\< 200KB total** (gzipped)   | Até ~70–80% menos JS inicial → carregamento muito mais rápido em 4G |
-| **⚙️ Controle de engenharia**| ~50% (parte da lógica escondida no framework)      | **100% (domínio total do fluxo)**                   | Sem "mágica": menos surpresas ao atualizar dependências de terceiros |
-| **⏱️ Tempo de setup**        | Rápido (CLI, roteador e store prontos)             | **≈ +30% de esforço inicial** para construir o core | Mais trabalho no começo, mas manutenção e debug muito mais previsíveis |
+### Comparativo de abordagens
+
+| Métrica                | Framework SPA comum (React/Angular/Vue)              | Esta arquitetura (Vanilla TS + Vite)                | Ganho                                       |
+|------------------------|------------------------------------------------------|-----------------------------------------------------|--------------------------------------------|
+| Bundle inicial (gzip)  | 150–300 KB só de overhead de framework              | \< 50 KB core, \< 200 KB total (gzipped)           | ~70–80% menos JS inicial em 4G             |
+| Controle de engenharia | ~50% (parte da lógica escondida no framework)       | 100% (domínio total do fluxo)                      | Menos “mágica”, menos surpresa em upgrades |
+| Tempo de setup         | Rápido (CLI, router e store prontos)                | ≈ +30% de esforço inicial para construir o core    | Manutenção e debug muito mais previsíveis  |
 
 > 💡 **Filosofia do projeto**
 >
-> *“Eu troquei a **comodidade** inicial do desenvolvimento (setup rápido com framework)
-> pela **excelência na entrega final**. O resultado é uma aplicação que carrega
-> quase instantaneamente, com controle absoluto sobre cada ciclo de renderização
-> e cada byte trafegado.”*
+> “Eu troquei a comodidade inicial do desenvolvimento (setup rápido com framework)
+> pela excelência na entrega final. O resultado é uma aplicação que carrega quase
+> instantaneamente, com controle absoluto sobre cada ciclo de renderização e cada
+> byte trafegado.”
 
 ---
 
 ## 🛠️ Stack Tecnológico
 
-| Categoria | Tecnologias |
-|-----------|-------------|
-| **Linguagem** | TypeScript (Strict Mode), Vanilla JS |
-| **Build & Dev** | Vite (ESM, HMR, esbuild + Rollup) |
-| **Arquitetura** | SPA Modular, Lazy Loading, Clean Architecture |
-| **Performance** | Web Vitals Monitor, Lazy Loader Universal, Image Optimizer |
-| **PWA** | Service Worker, Manifest, Cache Strategies, Offline Fallback |
+| Categoria     | Tecnologias                                               |
+|--------------|-----------------------------------------------------------|
+| Linguagem    | TypeScript (Strict Mode), Vanilla JS                      |
+| Build & Dev  | Vite (ESM, HMR, esbuild + Rollup)                         |
+| Arquitetura  | SPA Modular, Lazy Loading, Clean Architecture             |
+| Performance  | Web Vitals Monitor, Lazy Loader Universal, Image Optimizer|
+| PWA          | Service Worker, Manifest, Cache Strategies, Offline Fallback |
 
 ---
 
-## 🏗️ Visão de Arquitetura
+## 🧩 Visão de Arquitetura
 
 A aplicação é organizada em camadas claras, separando responsabilidades de **core**, **serviços**, **páginas** e **UI**.
 
+> ℹ️ A estrutura abaixo representa o projeto **completo** do Portal Auditoria 2.0.
+> Este repositório contém apenas os arquivos essenciais (ex.: `main.ts`, `vite.config.ts`)
+> e a documentação de arquitetura.
+
 ```text
 src/
-├── core/                 # 🧠 Framework agnóstico (Router, Http, State, Logger)
-├── services/             # 🔌 Camada de acesso à API e Regras de Negócio
-├── models/               # 📦 DTOs e Tipagem (TypeScript/OpenAPI)
-├── pages/                # 📄 Páginas Públicas e Administrativas (Lazy Loaded)
-├── components/           # 🧩 Componentes Reutilizáveis (Layout, Media, UI)
-└── styles/               # 🎨 Sistema CSS em camadas (Tokens, Utilities)
-📘 Quer ver a estrutura detalhada? Consulte o arquivo completo: ESTRUTURA-FRONTEND-COMPLETA.md
-
+├── core/                 # Framework-agnostic (Router, Http, State, Logger)
+├── services/             # Acesso à API + regras de negócio
+├── models/               # DTOs e tipagem (TypeScript / OpenAPI)
+├── pages/                # Páginas públicas e administrativas (lazy loaded)
+├── components/           # Componentes reutilizáveis (layout, media, UI)
+└── styles/               # Sistema CSS em camadas (tokens, utilities, themes)
 ⚡ Destaques Técnicos
 1. Vite + Code Splitting Manual
-O arquivo vite.config.ts foi customizado para superar as configurações padrão,
- implementando estratégias manuais de divisão de código (chunks):
+O arquivo vite.config.ts foi customizado para ir além das configs padrão, com divisão manual de chunks:
 
-vendor-core: Router, Http Client, State Management.
+vendor-core: Router, Http Client, State Management
 
-vendor-performance: Web Vitals, LazyLoader, Image Optimizer.
+vendor-performance: Web Vitals, LazyLoader, Image Optimizer
 
-auth: Módulos de login e segurança.
+auth: módulos de login e segurança
 
-admin: Módulos da área administrativa (carregados sob demanda).
+admin: área administrativa (carregada sob demanda)
 
-Diferenciais:
+Diferenciais adicionais:
 
-Compressão Gzip + Brotli nativa.
+Compressão Gzip + Brotli
 
-Runtime Caching via VitePWA.
+Runtime caching via VitePWA
 
 2. SPA Router + Guards + Interceptors
 Sistema de roteamento próprio, leve e seguro:
 
-AuthGuard: Proteção automática de rotas administrativas.
+AuthGuard: proteção de rotas administrativas
 
-Http Interceptors: Injeção automática de JWT e tratamento global de erros (401/403).
+Http Interceptors: injeção automática de JWT e tratamento global de erros (401/403)
 
-State Management: Store reativa baseada em Proxy nativo do JS.
+State Management: store reativa baseada em Proxy nativo do JS
 
 3. Performance Core (src/core/performance)
-Módulos dedicados para garantir a nota 100 no Lighthouse:
+Módulos dedicados para maximizar a nota no Lighthouse:
 
-PerformanceMonitor: Coleta métricas reais (LCP, FID, CLS) em tempo de execução.
+PerformanceMonitor: coleta de métricas reais (LCP, FID, CLS etc.)
 
-LazyLoader: Carregamento sob demanda universal (Imagens, Vídeos, Iframes).
+LazyLoader: carregamento sob demanda universal (imagens, vídeos, iframes)
 
-ResourcePrefetcher: "Adivinha" a próxima navegação e pré-carrega rotas e APIs.
+ResourcePrefetcher: “adivinha” a próxima navegação e pré-carrega rotas/APIs
 
-4. Sistema CSS "Estado da Arte"
-Arquitetura de estilos sem dependência de frameworks (Tailwind/Bootstrap) para reduzir o peso crítico.
+4. Sistema CSS “estado da arte”
+Arquitetura de estilos sem frameworks de CSS (Tailwind/Bootstrap), reduzindo o peso crítico de CSS:
 
-Critical CSS: Injetado inline.
+Critical CSS injetado inline
 
-Design Tokens: Variáveis CSS para cores, tipografia e espaçamentos.
+Design Tokens – variáveis CSS para cores, tipografia e espaçamentos
 
-Grid System: Sistema próprio de 12 colunas flexível.
+Grid system próprio (12 colunas, fluido)
 
-🎨 Veja o guia de estilos: src/styles/README-CSS-USAGE.md
+Suporte nativo a Dark Mode via data-theme
 
-📚 Documentação Complementar
-Recomendamos a navegação na seguinte ordem:
+📄 Veja detalhes no guia de estilos:
 
-README.md (Este arquivo) - Visão geral.
+README-CSS-USAGE.md
+(ou src/styles/README-CSS-USAGE.md, dependendo de onde você mantém o arquivo)
 
-ESTRUTURA-FRONTEND-COMPLETA.md - Árvore de arquivos e explicação detalhada.
+📚 Documentação complementar
+Recomendo a leitura na seguinte ordem:
 
-src/styles/README-CSS-USAGE.md - Sistema de Design, Grid e Tokens.
+README.md (este arquivo) – visão geral.
+
+ESTRUTURA-FRONTEND.md – árvore de arquivos e explicações detalhadas de cada módulo.
+
+README-CSS-USAGE.md – sistema de design, grid, tokens e convenções de CSS.
 
 ❓ F.A.Q.
 Este repositório roda a aplicação completa?
-
-Não necessariamente. Como o objetivo é demonstrar decisões de arquitetura e padrões de código,
-as partes contendo regras de negócio proprietárias e dados sensíveis não estão incluídas.
+Não.
+O objetivo é demonstrar decisões de arquitetura e padrões de código.
+Partes contendo regras de negócio proprietárias e dados sensíveis não estão incluídas.
 
 Para que serve este repositório?
+🧪 Portfólio técnico – demonstração de capacidade em engenharia de software.
 
-Portfólio Técnico: Demonstração de capacidade em Engenharia de Software.
+📘 Referência – base de boas práticas em Vite e TypeScript.
 
-Referência: Base de conhecimento para boas práticas em Vite e TypeScript.
+🔍 Auditoria técnica – transparência sobre a qualidade do produto.
 
-Auditoria: Transparência sobre a qualidade técnica do produto.
+🌍 TL;DR (English)
+This repository is an architecture showcase for a high-performance SPA built with vanilla TypeScript and Vite.
 
-👨‍💻 Autor
-Samuel Sereja Silva Contador & Desenvolvedor de Software Especialista em unir
- regras de negócio complexas com engenharia de software de alta performance.
+It focuses on:
+
+tiny bundle size and Web Vitals,
+
+a custom CSS architecture (design tokens, grid system, dark mode),
+
+PWA features and manual code splitting.
+
+Business rules are not included – this is a technical portfolio, not the full product.
+
+👤 Autor
+Samuel Sereja Silva
+Contador & Desenvolvedor de Software
+Especialista em unir regras de negócio complexas com engenharia de software de alta performance.
 
 GitHub: @samuelserejasilva
 
 LinkedIn: https://www.linkedin.com/in/portalauditoria/
 
 E-mail: samuel@portalauditoria.com.br
-Documentação gerada em Dezembro de 2025.
+
+Documentação gerada / atualizada em Dezembro de 2025.
