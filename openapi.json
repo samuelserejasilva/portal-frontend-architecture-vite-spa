@@ -1,0 +1,1071 @@
+{
+  "openapi": "3.0.1",
+  "info": { "title": "Portal Auditoria API", "description": "API REST do Portal Auditoria 2.0", "license": { "name": "MIT" }, "version": "v1" },
+  "servers": [{ "url": "http://localhost:8080", "description": "Generated server url" }],
+  "tags": [
+    { "name": "Webhook Admin - Subscriptions", "description": "Gerenciamento de assinaturas de webhooks (outgoing)" },
+    { "name": "Webhook Admin - Deliveries", "description": "Histórico e reenvio de entregas de webhooks (outgoing)" },
+    { "name": "Webhook Admin - Received", "description": "Consulta e reprocessamento de webhooks recebidos" }
+  ],
+  "paths": {
+    "/api/v1/pessoas/{id}": {
+      "get": {
+        "tags": ["pessoa-controller"],
+        "operationId": "get",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } }],
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PessoaDTO" } } } } }
+      },
+      "put": {
+        "tags": ["pessoa-controller"],
+        "operationId": "update",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } }],
+        "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PessoaUpdateDTO" } } }, "required": true },
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PessoaDTO" } } } } }
+      },
+      "delete": {
+        "tags": ["pessoa-controller"],
+        "operationId": "delete",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/v1/empresas/{id}": {
+      "get": {
+        "tags": ["empresa-controller"],
+        "operationId": "getById",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } }],
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/EmpresaDTO" } } } } }
+      },
+      "put": {
+        "tags": ["empresa-controller"],
+        "operationId": "update_1",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } }],
+        "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/EmpresaUpdateDTO" } } }, "required": true },
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/EmpresaDTO" } } } } }
+      },
+      "delete": {
+        "tags": ["empresa-controller"],
+        "operationId": "delete_1",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/v1/empresas/{empresaId}/participacoes/{id}": {
+      "put": {
+        "tags": ["participacao-societaria-controller"],
+        "operationId": "update_2",
+        "parameters": [
+          { "name": "empresaId", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } },
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } }
+        ],
+        "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ParticipacaoUpdateDTO" } } }, "required": true },
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/ParticipacaoDTO" } } } } }
+      },
+      "delete": {
+        "tags": ["participacao-societaria-controller"],
+        "operationId": "delete_2",
+        "parameters": [
+          { "name": "empresaId", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } },
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/v1/admin/webhooks/subscriptions/{id}": {
+      "put": {
+        "tags": ["Webhook Admin - Subscriptions"],
+        "summary": "Atualizar assinatura",
+        "operationId": "update_3",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int64" } }],
+        "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/WebhookSubscriptionRequest" } } }, "required": true },
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/WebhookSubscriptionResponse" } } } } }
+      }
+    },
+    "/api/v1/admin/users/{id}": {
+      "get": {
+        "tags": ["admin-usuario-controller"],
+        "operationId": "get_1",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int64" } }],
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/UsuarioDTO" } } } } }
+      },
+      "put": {
+        "tags": ["admin-usuario-controller"],
+        "operationId": "update_4",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int64" } }],
+        "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/UsuarioUpdateDTO" } } }, "required": true },
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/UsuarioDTO" } } } } }
+      },
+      "delete": {
+        "tags": ["admin-usuario-controller"],
+        "operationId": "delete_3",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int64" } }],
+        "responses": { "204": { "description": "No Content" } }
+      }
+    },
+    "/api/v1/admin/servicos/{slugOrId}": {
+      "put": {
+        "tags": ["admin-servico-controller"],
+        "operationId": "update_5",
+        "parameters": [{ "name": "slugOrId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ServicoUpdateDTO" } } }, "required": true },
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/ServicoDTO" } } } } }
+      },
+      "delete": {
+        "tags": ["admin-servico-controller"],
+        "operationId": "delete_4",
+        "parameters": [{ "name": "slugOrId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "204": { "description": "No Content" } }
+      }
+    },
+    "/api/v1/admin/posts/{slugOrId}": {
+      "put": {
+        "tags": ["admin-post-controller"],
+        "operationId": "update_6",
+        "parameters": [{ "name": "slugOrId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PostUpdateDTO" } } }, "required": true },
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PostDTO" } } } } }
+      },
+      "delete": {
+        "tags": ["admin-post-controller"],
+        "operationId": "delete_5",
+        "parameters": [{ "name": "slugOrId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "204": { "description": "No Content" } }
+      }
+    },
+    "/api/v1/webhooks/receive/{source}": {
+      "post": {
+        "tags": ["webhook-receive-controller"],
+        "summary": "Receber webhook",
+        "description": "Aceita o webhook, registra para processamento assíncrono e retorna 202 Accepted",
+        "operationId": "receive",
+        "parameters": [
+          { "name": "source", "in": "path", "required": true, "schema": { "type": "string" } },
+          { "name": "empresaId", "in": "query", "required": false, "schema": { "type": "integer", "format": "int32" } },
+          { "name": "X-Empresa-Id", "in": "header", "required": false, "schema": { "type": "integer", "format": "int32" } },
+          { "name": "externalId", "in": "query", "required": false, "schema": { "type": "string" } },
+          { "name": "X-Webhook-External-Id", "in": "header", "required": false, "schema": { "type": "string" } },
+          { "name": "X-Webhook-Signature", "in": "header", "required": false, "schema": { "type": "string" } }
+        ],
+        "requestBody": { "content": { "application/json": { "schema": { "type": "string" } } } },
+        "responses": {
+          "202": {
+            "description": "Webhook aceito e persistido",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/WebhookReceiveResponse" } } }
+          },
+          "400": {
+            "description": "Payload ou parâmetros inválidos",
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/WebhookReceiveResponse" } } }
+          }
+        }
+      }
+    },
+    "/api/v1/users/register": {
+      "post": {
+        "tags": ["public-usuario-controller"],
+        "operationId": "register",
+        "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/UsuarioCreateDTO" } } }, "required": true },
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/UsuarioDTO" } } } } }
+      }
+    },
+    "/api/v1/pessoas": {
+      "post": {
+        "tags": ["pessoa-controller"],
+        "operationId": "create",
+        "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PessoaCreateDTO" } } }, "required": true },
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PessoaDTO" } } } } }
+      }
+    },
+    "/api/v1/errors/frontend": {
+      "get": { "tags": ["frontend-error-controller"], "operationId": "ping", "responses": { "200": { "description": "OK" } } },
+      "post": {
+        "tags": ["frontend-error-controller"],
+        "operationId": "report",
+        "requestBody": { "content": { "application/json": { "schema": { "type": "object", "additionalProperties": { "type": "object" } } } } },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/v1/empresas": {
+      "get": {
+        "tags": ["empresa-controller"],
+        "operationId": "findAll",
+        "parameters": [{ "name": "pageable", "in": "query", "required": true, "schema": { "$ref": "#/components/schemas/Pageable" } }],
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PageResponseEmpresaResumoDTO" } } } } }
+      },
+      "post": {
+        "tags": ["empresa-controller"],
+        "operationId": "create_1",
+        "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/EmpresaCreateDTO" } } }, "required": true },
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/EmpresaDTO" } } } } }
+      }
+    },
+    "/api/v1/empresas/{empresaId}/participacoes": {
+      "get": {
+        "tags": ["participacao-societaria-controller"],
+        "operationId": "list",
+        "parameters": [{ "name": "empresaId", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } }],
+        "responses": {
+          "200": { "description": "OK", "content": { "*/*": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/ParticipacaoDTO" } } } } }
+        }
+      },
+      "post": {
+        "tags": ["participacao-societaria-controller"],
+        "operationId": "create_2",
+        "parameters": [{ "name": "empresaId", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } }],
+        "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ParticipacaoCreateDTO" } } }, "required": true },
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/ParticipacaoDTO" } } } } }
+      }
+    },
+    "/api/v1/auth/revoke": {
+      "post": {
+        "tags": ["auth-controller"],
+        "operationId": "revoke",
+        "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/RevokeRequest" } } }, "required": true },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/v1/auth/reset-password": {
+      "post": {
+        "tags": ["password-recovery-controller"],
+        "operationId": "reset",
+        "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ResetPasswordRequest" } } }, "required": true },
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "type": "object", "additionalProperties": { "type": "object" } } } } } }
+      }
+    },
+    "/api/v1/auth/refresh": {
+      "post": {
+        "tags": ["auth-controller"],
+        "operationId": "refresh",
+        "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/RefreshRequest" } } }, "required": true },
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/LoginResponse" } } } } }
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "tags": ["auth-controller"],
+        "operationId": "login",
+        "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/LoginRequest" } } }, "required": true },
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/LoginResponse" } } } } }
+      }
+    },
+    "/api/v1/auth/forgot-password": {
+      "post": {
+        "tags": ["password-recovery-controller"],
+        "operationId": "forgot",
+        "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ForgotPasswordRequest" } } }, "required": true },
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "type": "object", "additionalProperties": { "type": "object" } } } } } }
+      }
+    },
+    "/api/v1/admin/webhooks/subscriptions": {
+      "get": {
+        "tags": ["Webhook Admin - Subscriptions"],
+        "summary": "Listar assinaturas",
+        "description": "Lista todas as assinaturas ou filtra por empresa",
+        "operationId": "list_1",
+        "parameters": [{ "name": "empresaId", "in": "query", "required": false, "schema": { "type": "integer", "format": "int32" } }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/WebhookSubscriptionResponse" } } } }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Webhook Admin - Subscriptions"],
+        "summary": "Criar assinatura",
+        "operationId": "create_3",
+        "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/WebhookSubscriptionRequest" } } }, "required": true },
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/WebhookSubscriptionResponse" } } } } }
+      }
+    },
+    "/api/v1/admin/webhooks/received/{id}/reprocess": {
+      "post": {
+        "tags": ["Webhook Admin - Received"],
+        "summary": "Reprocessar webhook recebido",
+        "description": "Marca registro como PENDING e limpa erro",
+        "operationId": "reprocess",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int64" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/v1/admin/webhooks/deliveries/{id}/retry": {
+      "post": {
+        "tags": ["Webhook Admin - Deliveries"],
+        "summary": "Forçar reenvio",
+        "description": "Marca uma entrega falha como PENDING para reprocessar",
+        "operationId": "retry",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int64" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/v1/admin/users": {
+      "get": {
+        "tags": ["admin-usuario-controller"],
+        "operationId": "list_2",
+        "parameters": [{ "name": "pageable", "in": "query", "required": true, "schema": { "$ref": "#/components/schemas/Pageable" } }],
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PageUsuarioDTO" } } } } }
+      },
+      "post": {
+        "tags": ["admin-usuario-controller"],
+        "operationId": "create_4",
+        "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/UsuarioCreateDTO" } } }, "required": true },
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/UsuarioDTO" } } } } }
+      }
+    },
+    "/api/v1/admin/servicos": {
+      "get": {
+        "tags": ["admin-servico-controller"],
+        "operationId": "list_3",
+        "parameters": [{ "name": "pageable", "in": "query", "required": true, "schema": { "$ref": "#/components/schemas/Pageable" } }],
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PageServicoDTO" } } } } }
+      },
+      "post": {
+        "tags": ["admin-servico-controller"],
+        "operationId": "create_5",
+        "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ServicoCreateDTO" } } }, "required": true },
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/ServicoDTO" } } } } }
+      }
+    },
+    "/api/v1/admin/posts": {
+      "get": {
+        "tags": ["admin-post-controller"],
+        "operationId": "list_4",
+        "parameters": [{ "name": "pageable", "in": "query", "required": true, "schema": { "$ref": "#/components/schemas/Pageable" } }],
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PagePostDTO" } } } } }
+      },
+      "post": {
+        "tags": ["admin-post-controller"],
+        "operationId": "create_6",
+        "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PostCreateDTO" } } }, "required": true },
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PostDTO" } } } } }
+      }
+    },
+    "/api/v1/admin/media/upload": {
+      "post": {
+        "tags": ["admin-media-controller"],
+        "operationId": "upload",
+        "parameters": [
+          { "name": "subfolder", "in": "query", "required": false, "schema": { "type": "string" } },
+          { "name": "alt", "in": "query", "required": false, "schema": { "type": "string" } },
+          { "name": "title", "in": "query", "required": false, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": { "schema": { "required": ["file"], "type": "object", "properties": { "file": { "type": "string", "format": "binary" } } } }
+          }
+        },
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/UploadResponseDTO" } } } } }
+      }
+    },
+    "/api/v1/servicos": {
+      "get": {
+        "tags": ["servico-controller"],
+        "operationId": "list_5",
+        "parameters": [
+          { "name": "destaque", "in": "query", "required": false, "schema": { "type": "boolean" } },
+          { "name": "pageable", "in": "query", "required": true, "schema": { "$ref": "#/components/schemas/Pageable" } }
+        ],
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PageServicoDTO" } } } } }
+      }
+    },
+    "/api/v1/servicos/{slugOrId}": {
+      "get": {
+        "tags": ["servico-controller"],
+        "operationId": "get_2",
+        "parameters": [{ "name": "slugOrId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/ServicoDTO" } } } } }
+      }
+    },
+    "/api/v1/posts": {
+      "get": {
+        "tags": ["post-controller"],
+        "operationId": "list_6",
+        "parameters": [
+          { "name": "status", "in": "query", "required": false, "schema": { "type": "string", "default": "PUBLICADO" } },
+          { "name": "pageable", "in": "query", "required": true, "schema": { "$ref": "#/components/schemas/Pageable" } }
+        ],
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PagePostDTO" } } } } }
+      }
+    },
+    "/api/v1/posts/{slugOrId}": {
+      "get": {
+        "tags": ["post-controller"],
+        "operationId": "get_3",
+        "parameters": [{ "name": "slugOrId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PostDTO" } } } } }
+      }
+    },
+    "/api/v1/media/{id}": {
+      "get": {
+        "tags": ["media-public-controller"],
+        "operationId": "redirect",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int64" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/v1/media/{id}/info": {
+      "get": {
+        "tags": ["media-public-controller"],
+        "operationId": "info",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int64" } }],
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/MediaDTO" } } } } }
+      }
+    },
+    "/api/v1/layout/pages/home": {
+      "get": {
+        "tags": ["layout-controller"],
+        "operationId": "homePage",
+        "parameters": [{ "name": "empresa", "in": "query", "required": false, "schema": { "type": "string", "default": "1" } }],
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/HomePageDTO" } } } } }
+      }
+    },
+    "/api/v1/layout/header-footer": {
+      "get": {
+        "tags": ["layout-controller"],
+        "operationId": "headerFooter",
+        "parameters": [{ "name": "empresa", "in": "query", "required": false, "schema": { "type": "string", "default": "1" } }],
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/EmpresaSeoDTO" } } } } }
+      }
+    },
+    "/api/v1/empresas/seo-data/{slugOrId}": {
+      "get": {
+        "tags": ["empresa-controller"],
+        "operationId": "getSeo",
+        "parameters": [{ "name": "slugOrId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/EmpresaSeoDTO" } } } } }
+      }
+    },
+    "/api/v1/auth/me": {
+      "get": {
+        "tags": ["auth-controller"],
+        "operationId": "me",
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/AuthMeResponse" } } } } }
+      }
+    },
+    "/api/v1/admin/webhooks/received": {
+      "get": {
+        "tags": ["Webhook Admin - Received"],
+        "summary": "Listar webhooks recebidos",
+        "operationId": "list_7",
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "type": "object" } } } } }
+      }
+    },
+    "/api/v1/admin/webhooks/deliveries": {
+      "get": {
+        "tags": ["Webhook Admin - Deliveries"],
+        "summary": "Listar entregas (deliveries)",
+        "operationId": "list_8",
+        "parameters": [{ "name": "empresaId", "in": "query", "required": false, "schema": { "type": "integer", "format": "int32" } }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/WebhookDeliveryResponse" } } } }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/audit": {
+      "get": {
+        "tags": ["admin-audit-controller"],
+        "operationId": "search",
+        "parameters": [
+          { "name": "path", "in": "query", "required": false, "schema": { "type": "string" } },
+          { "name": "actorEmail", "in": "query", "required": false, "schema": { "type": "string" } },
+          { "name": "status", "in": "query", "required": false, "schema": { "type": "integer", "format": "int32" } },
+          { "name": "from", "in": "query", "required": false, "schema": { "type": "string", "format": "date-time" } },
+          { "name": "to", "in": "query", "required": false, "schema": { "type": "string", "format": "date-time" } },
+          { "name": "pageable", "in": "query", "required": true, "schema": { "$ref": "#/components/schemas/Pageable" } }
+        ],
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PageAuditEvent" } } } } }
+      }
+    },
+    "/api/v1/admin/audit/logs": {
+      "get": {
+        "tags": ["admin-audit-controller"],
+        "operationId": "logs",
+        "parameters": [
+          { "name": "path", "in": "query", "required": false, "schema": { "type": "string" } },
+          { "name": "actorEmail", "in": "query", "required": false, "schema": { "type": "string" } },
+          { "name": "status", "in": "query", "required": false, "schema": { "type": "integer", "format": "int32" } },
+          { "name": "from", "in": "query", "required": false, "schema": { "type": "string", "format": "date-time" } },
+          { "name": "to", "in": "query", "required": false, "schema": { "type": "string", "format": "date-time" } },
+          { "name": "pageable", "in": "query", "required": true, "schema": { "$ref": "#/components/schemas/Pageable" } }
+        ],
+        "responses": { "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PageAuditEvent" } } } } }
+      }
+    },
+    "/api/v1/admin/media/{id}": {
+      "delete": {
+        "tags": ["admin-media-controller"],
+        "operationId": "delete_6",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int64" } }],
+        "responses": { "204": { "description": "No Content" } }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PessoaUpdateDTO": {
+        "type": "object",
+        "properties": {
+          "tipo": { "type": "string" },
+          "cpf": { "maxLength": 14, "minLength": 0, "type": "string" },
+          "cnpj": { "maxLength": 20, "minLength": 0, "type": "string" },
+          "nomeRazao": { "maxLength": 255, "minLength": 0, "type": "string" },
+          "nomeFantasia": { "maxLength": 255, "minLength": 0, "type": "string" },
+          "email": { "maxLength": 255, "minLength": 0, "type": "string" },
+          "telefone": { "maxLength": 20, "minLength": 0, "type": "string" },
+          "cep": { "maxLength": 9, "minLength": 0, "type": "string" },
+          "logradouro": { "maxLength": 150, "minLength": 0, "type": "string" },
+          "numero": { "maxLength": 20, "minLength": 0, "type": "string" },
+          "complemento": { "maxLength": 100, "minLength": 0, "type": "string" },
+          "bairro": { "maxLength": 100, "minLength": 0, "type": "string" },
+          "cidade": { "maxLength": 100, "minLength": 0, "type": "string" },
+          "estado": { "maxLength": 2, "minLength": 0, "type": "string" },
+          "empresaId": { "type": "integer", "format": "int32" },
+          "ativo": { "type": "boolean" }
+        }
+      },
+      "PessoaDTO": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int32" },
+          "tipo": { "type": "string" },
+          "cpf": { "type": "string" },
+          "cnpj": { "type": "string" },
+          "nomeRazao": { "type": "string" },
+          "nomeFantasia": { "type": "string" },
+          "email": { "type": "string" },
+          "telefone": { "type": "string" },
+          "cep": { "type": "string" },
+          "logradouro": { "type": "string" },
+          "numero": { "type": "string" },
+          "complemento": { "type": "string" },
+          "bairro": { "type": "string" },
+          "cidade": { "type": "string" },
+          "estado": { "type": "string" },
+          "empresaId": { "type": "integer", "format": "int32" },
+          "ativo": { "type": "boolean" }
+        }
+      },
+      "EmpresaUpdateDTO": {
+        "type": "object",
+        "properties": {
+          "razaoSocial": { "maxLength": 255, "minLength": 0, "type": "string" },
+          "nomeFantasia": { "maxLength": 255, "minLength": 0, "type": "string" },
+          "slogan": { "maxLength": 255, "minLength": 0, "type": "string" },
+          "logoUrl": { "maxLength": 512, "minLength": 0, "type": "string" },
+          "logoMediaId": { "type": "integer", "format": "int64" },
+          "siteUrl": { "maxLength": 512, "minLength": 0, "type": "string" },
+          "googleMapsUrl": { "maxLength": 512, "minLength": 0, "type": "string" },
+          "cep": { "maxLength": 9, "minLength": 0, "type": "string" },
+          "logradouro": { "maxLength": 150, "minLength": 0, "type": "string" },
+          "numero": { "maxLength": 20, "minLength": 0, "type": "string" },
+          "complemento": { "maxLength": 100, "minLength": 0, "type": "string" },
+          "bairro": { "maxLength": 100, "minLength": 0, "type": "string" },
+          "cidade": { "maxLength": 100, "minLength": 0, "type": "string" },
+          "estado": { "maxLength": 2, "minLength": 0, "type": "string" },
+          "codigoMunicipioIbge": { "maxLength": 7, "minLength": 0, "type": "string" },
+          "telefonePrincipal": { "maxLength": 20, "minLength": 0, "type": "string" },
+          "telefoneSecundario": { "maxLength": 20, "minLength": 0, "type": "string" },
+          "emailContato": { "maxLength": 255, "minLength": 0, "type": "string" },
+          "emailFinanceiro": { "maxLength": 255, "minLength": 0, "type": "string" },
+          "missao": { "type": "string" },
+          "visao": { "type": "string" },
+          "valores": { "type": "string" },
+          "ativo": { "type": "boolean" }
+        }
+      },
+      "EmpresaDTO": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int32" },
+          "razaoSocial": { "type": "string" },
+          "nomeFantasia": { "type": "string" },
+          "cnpj": { "type": "string" },
+          "slug": { "type": "string" },
+          "email": { "type": "string" },
+          "telefone": { "type": "string" },
+          "siteUrl": { "type": "string" },
+          "logoMediaId": { "type": "integer", "format": "int64" },
+          "logoUrl": { "type": "string" },
+          "descricao": { "type": "string" }
+        }
+      },
+      "ParticipacaoUpdateDTO": {
+        "type": "object",
+        "properties": {
+          "papel": { "type": "string" },
+          "percentual": { "type": "number" },
+          "valorQuota": { "type": "number" },
+          "responsavelLegal": { "type": "boolean" },
+          "dataEntrada": { "type": "string", "format": "date" },
+          "dataSaida": { "type": "string", "format": "date" },
+          "observacoes": { "type": "string" }
+        }
+      },
+      "ParticipacaoDTO": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int32" },
+          "empresaId": { "type": "integer", "format": "int32" },
+          "pessoaId": { "type": "integer", "format": "int32" },
+          "papel": { "type": "string" },
+          "percentual": { "type": "number" },
+          "valorQuota": { "type": "number" },
+          "responsavelLegal": { "type": "boolean" },
+          "dataEntrada": { "type": "string", "format": "date" },
+          "dataSaida": { "type": "string", "format": "date" },
+          "observacoes": { "type": "string" }
+        }
+      },
+      "WebhookSubscriptionRequest": {
+        "required": ["empresaId", "eventType", "secretKey", "targetUrl"],
+        "type": "object",
+        "properties": {
+          "empresaId": { "type": "integer", "format": "int32" },
+          "nome": { "type": "string" },
+          "eventType": { "type": "string" },
+          "targetUrl": { "type": "string" },
+          "secretKey": { "type": "string" },
+          "status": { "type": "string", "enum": ["ACTIVE", "PAUSED", "DISABLED"] },
+          "maxRetries": { "minimum": 1, "type": "integer", "format": "int32" },
+          "timeoutSeconds": { "minimum": 1, "type": "integer", "format": "int32" }
+        }
+      },
+      "WebhookSubscriptionResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "empresaId": { "type": "integer", "format": "int32" },
+          "nome": { "type": "string" },
+          "eventType": { "type": "string" },
+          "targetUrl": { "type": "string" },
+          "status": { "type": "string", "enum": ["ACTIVE", "PAUSED", "DISABLED"] },
+          "maxRetries": { "type": "integer", "format": "int32" },
+          "timeoutSeconds": { "type": "integer", "format": "int32" }
+        }
+      },
+      "UsuarioUpdateDTO": {
+        "type": "object",
+        "properties": {
+          "nome": { "maxLength": 160, "minLength": 0, "type": "string" },
+          "email": { "maxLength": 160, "minLength": 0, "type": "string" },
+          "novaSenha": { "maxLength": 100, "minLength": 6, "type": "string" },
+          "role": { "maxLength": 40, "minLength": 0, "type": "string" },
+          "ativo": { "type": "boolean" }
+        }
+      },
+      "UsuarioDTO": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "nome": { "type": "string" },
+          "email": { "type": "string" },
+          "empresaId": { "type": "integer", "format": "int64" },
+          "role": { "type": "string" },
+          "ativo": { "type": "boolean" },
+          "createdAt": { "type": "string" },
+          "updatedAt": { "type": "string" }
+        }
+      },
+      "ServicoUpdateDTO": {
+        "type": "object",
+        "properties": {
+          "titulo": { "maxLength": 180, "minLength": 0, "type": "string" },
+          "descricaoCurta": { "maxLength": 280, "minLength": 0, "type": "string" },
+          "descricao": { "type": "string" },
+          "destaque": { "type": "boolean" },
+          "departamentoId": { "type": "integer", "format": "int64" },
+          "imagemMediaId": { "type": "integer", "format": "int64" }
+        }
+      },
+      "ServicoDTO": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int32" },
+          "slug": { "type": "string" },
+          "titulo": { "type": "string" },
+          "descricaoCurta": { "type": "string" },
+          "descricao": { "type": "string" },
+          "destaque": { "type": "boolean" },
+          "departamentoId": { "type": "integer", "format": "int64" },
+          "imagemMediaId": { "type": "integer", "format": "int64" },
+          "imagemUrl": { "type": "string" },
+          "createdAt": { "type": "string" },
+          "updatedAt": { "type": "string" }
+        }
+      },
+      "PostUpdateDTO": {
+        "type": "object",
+        "properties": {
+          "titulo": { "maxLength": 180, "minLength": 0, "type": "string" },
+          "subtitulo": { "maxLength": 220, "minLength": 0, "type": "string" },
+          "conteudo": { "type": "string" },
+          "status": { "type": "string" },
+          "autorId": { "type": "integer", "format": "int64" },
+          "categoriaId": { "type": "integer", "format": "int32" },
+          "tipoConteudoId": { "type": "integer", "format": "int64" },
+          "empresaId": { "type": "integer", "format": "int32" },
+          "heroMediaId": { "type": "integer", "format": "int64" },
+          "publishedAtIso": { "type": "string" }
+        }
+      },
+      "PostDTO": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "slug": { "type": "string" },
+          "titulo": { "type": "string" },
+          "subtitulo": { "type": "string" },
+          "conteudo": { "type": "string" },
+          "status": { "type": "string" },
+          "publishedAt": { "type": "string" },
+          "autorId": { "type": "integer", "format": "int64" },
+          "categoriaId": { "type": "integer", "format": "int32" },
+          "tipoId": { "type": "integer", "format": "int64" },
+          "heroMediaId": { "type": "integer", "format": "int64" },
+          "heroUrl": { "type": "string" }
+        }
+      },
+      "WebhookReceiveResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "duplicate": { "type": "boolean" },
+          "status": { "type": "string", "enum": ["PENDING", "PROCESSED", "DISCARDED", "FAILED"] }
+        }
+      },
+      "UsuarioCreateDTO": {
+        "required": ["email", "nome", "senha"],
+        "type": "object",
+        "properties": {
+          "nome": { "maxLength": 160, "minLength": 0, "type": "string" },
+          "email": { "maxLength": 160, "minLength": 0, "type": "string" },
+          "senha": { "maxLength": 100, "minLength": 6, "type": "string" },
+          "role": { "maxLength": 40, "minLength": 0, "type": "string" }
+        }
+      },
+      "PessoaCreateDTO": {
+        "required": ["nomeRazao", "tipo"],
+        "type": "object",
+        "properties": {
+          "tipo": { "type": "string" },
+          "cpf": { "maxLength": 14, "minLength": 0, "type": "string" },
+          "cnpj": { "maxLength": 20, "minLength": 0, "type": "string" },
+          "nomeRazao": { "maxLength": 255, "minLength": 0, "type": "string" },
+          "nomeFantasia": { "maxLength": 255, "minLength": 0, "type": "string" },
+          "email": { "maxLength": 255, "minLength": 0, "type": "string" },
+          "telefone": { "maxLength": 20, "minLength": 0, "type": "string" },
+          "cep": { "maxLength": 9, "minLength": 0, "type": "string" },
+          "logradouro": { "maxLength": 150, "minLength": 0, "type": "string" },
+          "numero": { "maxLength": 20, "minLength": 0, "type": "string" },
+          "complemento": { "maxLength": 100, "minLength": 0, "type": "string" },
+          "bairro": { "maxLength": 100, "minLength": 0, "type": "string" },
+          "cidade": { "maxLength": 100, "minLength": 0, "type": "string" },
+          "estado": { "maxLength": 2, "minLength": 0, "type": "string" },
+          "empresaId": { "type": "integer", "format": "int32" },
+          "ativo": { "type": "boolean" }
+        }
+      },
+      "EmpresaCreateDTO": {
+        "required": ["cnpj", "razaoSocial"],
+        "type": "object",
+        "properties": {
+          "cnpj": { "maxLength": 20, "minLength": 0, "type": "string" },
+          "razaoSocial": { "maxLength": 255, "minLength": 0, "type": "string" },
+          "nomeFantasia": { "maxLength": 255, "minLength": 0, "type": "string" },
+          "slogan": { "maxLength": 255, "minLength": 0, "type": "string" },
+          "logoUrl": { "maxLength": 512, "minLength": 0, "type": "string" },
+          "logoMediaId": { "type": "integer", "format": "int64" },
+          "siteUrl": { "maxLength": 512, "minLength": 0, "type": "string" },
+          "googleMapsUrl": { "maxLength": 512, "minLength": 0, "type": "string" },
+          "cep": { "maxLength": 9, "minLength": 0, "type": "string" },
+          "logradouro": { "maxLength": 150, "minLength": 0, "type": "string" },
+          "numero": { "maxLength": 20, "minLength": 0, "type": "string" },
+          "complemento": { "maxLength": 100, "minLength": 0, "type": "string" },
+          "bairro": { "maxLength": 100, "minLength": 0, "type": "string" },
+          "cidade": { "maxLength": 100, "minLength": 0, "type": "string" },
+          "estado": { "maxLength": 2, "minLength": 0, "type": "string" },
+          "codigoMunicipioIbge": { "maxLength": 7, "minLength": 0, "type": "string" },
+          "telefonePrincipal": { "maxLength": 20, "minLength": 0, "type": "string" },
+          "telefoneSecundario": { "maxLength": 20, "minLength": 0, "type": "string" },
+          "emailContato": { "maxLength": 255, "minLength": 0, "type": "string" },
+          "emailFinanceiro": { "maxLength": 255, "minLength": 0, "type": "string" },
+          "missao": { "type": "string" },
+          "visao": { "type": "string" },
+          "valores": { "type": "string" },
+          "ativo": { "type": "boolean" }
+        }
+      },
+      "ParticipacaoCreateDTO": {
+        "required": ["empresaId", "pessoaId"],
+        "type": "object",
+        "properties": {
+          "empresaId": { "type": "integer", "format": "int32" },
+          "pessoaId": { "type": "integer", "format": "int32" },
+          "papel": { "maxLength": 100, "minLength": 0, "type": "string" },
+          "percentual": { "type": "number" },
+          "valorQuota": { "type": "number" },
+          "responsavelLegal": { "type": "boolean" },
+          "dataEntrada": { "type": "string", "format": "date" },
+          "dataSaida": { "type": "string", "format": "date" },
+          "observacoes": { "type": "string" }
+        }
+      },
+      "RevokeRequest": { "required": ["token"], "type": "object", "properties": { "token": { "type": "string" } } },
+      "ResetPasswordRequest": {
+        "required": ["codigo", "confirmarNovaSenha", "email", "novaSenha"],
+        "type": "object",
+        "properties": {
+          "email": { "type": "string" },
+          "codigo": { "maxLength": 6, "minLength": 6, "type": "string" },
+          "novaSenha": { "maxLength": 2147483647, "minLength": 6, "type": "string" },
+          "confirmarNovaSenha": { "type": "string" }
+        }
+      },
+      "RefreshRequest": { "required": ["refreshToken"], "type": "object", "properties": { "refreshToken": { "type": "string" } } },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "tokenType": { "type": "string" },
+          "accessToken": { "type": "string" },
+          "accessExpiresInSec": { "type": "integer", "format": "int64" },
+          "refreshToken": { "type": "string" },
+          "refreshExpiresInSec": { "type": "integer", "format": "int64" },
+          "role": { "type": "string" },
+          "tenantId": { "type": "integer", "format": "int64" }
+        }
+      },
+      "LoginRequest": { "required": ["email", "senha"], "type": "object", "properties": { "email": { "type": "string" }, "senha": { "type": "string" } } },
+      "ForgotPasswordRequest": { "required": ["email"], "type": "object", "properties": { "email": { "type": "string" } } },
+      "ServicoCreateDTO": {
+        "required": ["titulo"],
+        "type": "object",
+        "properties": {
+          "titulo": { "maxLength": 180, "minLength": 0, "type": "string" },
+          "descricaoCurta": { "maxLength": 280, "minLength": 0, "type": "string" },
+          "descricao": { "type": "string" },
+          "destaque": { "type": "boolean" },
+          "departamentoId": { "type": "integer", "format": "int64" },
+          "imagemMediaId": { "type": "integer", "format": "int64" }
+        }
+      },
+      "PostCreateDTO": {
+        "required": ["empresaId", "status", "titulo"],
+        "type": "object",
+        "properties": {
+          "titulo": { "maxLength": 180, "minLength": 0, "type": "string" },
+          "subtitulo": { "maxLength": 220, "minLength": 0, "type": "string" },
+          "conteudo": { "type": "string" },
+          "status": { "type": "string" },
+          "autorId": { "type": "integer", "format": "int64" },
+          "categoriaId": { "type": "integer", "format": "int32" },
+          "tipoConteudoId": { "type": "integer", "format": "int64" },
+          "empresaId": { "type": "integer", "format": "int32" },
+          "heroMediaId": { "type": "integer", "format": "int64" },
+          "publishedAtIso": { "type": "string" }
+        }
+      },
+      "UploadResponseDTO": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "url": { "type": "string" },
+          "mime": { "type": "string" },
+          "bytesSize": { "type": "integer", "format": "int64" },
+          "width": { "type": "integer", "format": "int32" },
+          "height": { "type": "integer", "format": "int32" },
+          "sha256": { "type": "string" },
+          "fileName": { "type": "string" }
+        }
+      },
+      "Pageable": {
+        "type": "object",
+        "properties": {
+          "page": { "minimum": 0, "type": "integer", "format": "int32" },
+          "size": { "minimum": 1, "type": "integer", "format": "int32" },
+          "sort": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "PageServicoDTO": {
+        "type": "object",
+        "properties": {
+          "totalElements": { "type": "integer", "format": "int64" },
+          "totalPages": { "type": "integer", "format": "int32" },
+          "size": { "type": "integer", "format": "int32" },
+          "content": { "type": "array", "items": { "$ref": "#/components/schemas/ServicoDTO" } },
+          "number": { "type": "integer", "format": "int32" },
+          "sort": { "$ref": "#/components/schemas/SortObject" },
+          "first": { "type": "boolean" },
+          "last": { "type": "boolean" },
+          "numberOfElements": { "type": "integer", "format": "int32" },
+          "pageable": { "$ref": "#/components/schemas/PageableObject" },
+          "empty": { "type": "boolean" }
+        }
+      },
+      "PageableObject": {
+        "type": "object",
+        "properties": {
+          "offset": { "type": "integer", "format": "int64" },
+          "sort": { "$ref": "#/components/schemas/SortObject" },
+          "pageNumber": { "type": "integer", "format": "int32" },
+          "pageSize": { "type": "integer", "format": "int32" },
+          "paged": { "type": "boolean" },
+          "unpaged": { "type": "boolean" }
+        }
+      },
+      "SortObject": { "type": "object", "properties": { "empty": { "type": "boolean" }, "sorted": { "type": "boolean" }, "unsorted": { "type": "boolean" } } },
+      "PagePostDTO": {
+        "type": "object",
+        "properties": {
+          "totalElements": { "type": "integer", "format": "int64" },
+          "totalPages": { "type": "integer", "format": "int32" },
+          "size": { "type": "integer", "format": "int32" },
+          "content": { "type": "array", "items": { "$ref": "#/components/schemas/PostDTO" } },
+          "number": { "type": "integer", "format": "int32" },
+          "sort": { "$ref": "#/components/schemas/SortObject" },
+          "first": { "type": "boolean" },
+          "last": { "type": "boolean" },
+          "numberOfElements": { "type": "integer", "format": "int32" },
+          "pageable": { "$ref": "#/components/schemas/PageableObject" },
+          "empty": { "type": "boolean" }
+        }
+      },
+      "MediaDTO": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "url": { "type": "string" },
+          "mime": { "type": "string" },
+          "bytesSize": { "type": "integer", "format": "int64" },
+          "width": { "type": "integer", "format": "int32" },
+          "height": { "type": "integer", "format": "int32" },
+          "altText": { "type": "string" },
+          "titleText": { "type": "string" },
+          "sha256": { "type": "string" }
+        }
+      },
+      "EmpresaSeoDTO": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "nome": { "type": "string" },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "logoUrl": { "type": "string" },
+          "siteUrl": { "type": "string" }
+        }
+      },
+      "HomePageDTO": {
+        "type": "object",
+        "properties": {
+          "layout": { "$ref": "#/components/schemas/EmpresaSeoDTO" },
+          "recentPosts": { "type": "array", "items": { "$ref": "#/components/schemas/PostSummaryDTO" } },
+          "featuredServices": { "type": "array", "items": { "$ref": "#/components/schemas/ServicoDTO" } }
+        }
+      },
+      "PostSummaryDTO": {
+        "type": "object",
+        "properties": { "id": { "type": "integer", "format": "int64" }, "titulo": { "type": "string" }, "slug": { "type": "string" } }
+      },
+      "EmpresaResumoDTO": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int32" },
+          "cnpj": { "type": "string" },
+          "razaoSocial": { "type": "string" },
+          "nomeFantasia": { "type": "string" },
+          "emailContato": { "type": "string" },
+          "telefonePrincipal": { "type": "string" },
+          "cidade": { "type": "string" },
+          "estado": { "type": "string" },
+          "ativo": { "type": "boolean" }
+        }
+      },
+      "PageResponseEmpresaResumoDTO": {
+        "type": "object",
+        "properties": {
+          "content": { "type": "array", "items": { "$ref": "#/components/schemas/EmpresaResumoDTO" } },
+          "totalElements": { "type": "integer", "format": "int64" },
+          "totalPages": { "type": "integer", "format": "int32" },
+          "page": { "type": "integer", "format": "int32" },
+          "size": { "type": "integer", "format": "int32" }
+        }
+      },
+      "AuthMeResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "email": { "type": "string" },
+          "role": { "type": "string" },
+          "tenantId": { "type": "integer", "format": "int64" }
+        }
+      },
+      "WebhookDeliveryResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "subscriptionId": { "type": "integer", "format": "int64" },
+          "eventType": { "type": "string" },
+          "status": { "type": "string" },
+          "attemptCount": { "type": "integer", "format": "int32" },
+          "lastResponseStatus": { "type": "integer", "format": "int32" }
+        }
+      },
+      "PageUsuarioDTO": {
+        "type": "object",
+        "properties": {
+          "totalElements": { "type": "integer", "format": "int64" },
+          "totalPages": { "type": "integer", "format": "int32" },
+          "size": { "type": "integer", "format": "int32" },
+          "content": { "type": "array", "items": { "$ref": "#/components/schemas/UsuarioDTO" } },
+          "number": { "type": "integer", "format": "int32" },
+          "sort": { "$ref": "#/components/schemas/SortObject" },
+          "first": { "type": "boolean" },
+          "last": { "type": "boolean" },
+          "numberOfElements": { "type": "integer", "format": "int32" },
+          "pageable": { "$ref": "#/components/schemas/PageableObject" },
+          "empty": { "type": "boolean" }
+        }
+      },
+      "AuditEvent": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "actorId": { "type": "integer", "format": "int64" },
+          "actorEmail": { "type": "string" },
+          "ip": { "type": "string" },
+          "method": { "type": "string" },
+          "path": { "type": "string" },
+          "status": { "type": "integer", "format": "int32" },
+          "durationMs": { "type": "integer", "format": "int64" },
+          "action": { "type": "string" },
+          "entityType": { "type": "string" },
+          "entityId": { "type": "integer", "format": "int64" },
+          "empresaId": { "type": "integer", "format": "int64" },
+          "userAgent": { "type": "string" },
+          "correlationId": { "type": "string" },
+          "payloadBefore": { "type": "string" },
+          "payloadAfter": { "type": "string" }
+        }
+      },
+      "PageAuditEvent": {
+        "type": "object",
+        "properties": {
+          "totalElements": { "type": "integer", "format": "int64" },
+          "totalPages": { "type": "integer", "format": "int32" },
+          "size": { "type": "integer", "format": "int32" },
+          "content": { "type": "array", "items": { "$ref": "#/components/schemas/AuditEvent" } },
+          "number": { "type": "integer", "format": "int32" },
+          "sort": { "$ref": "#/components/schemas/SortObject" },
+          "first": { "type": "boolean" },
+          "last": { "type": "boolean" },
+          "numberOfElements": { "type": "integer", "format": "int32" },
+          "pageable": { "$ref": "#/components/schemas/PageableObject" },
+          "empty": { "type": "boolean" }
+        }
+      }
+    }
+  }
+}
