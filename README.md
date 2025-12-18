@@ -1,16 +1,4 @@
- # Portal Auditoria – SPA Architecture Showcase
----
-
-## 2. Frontend (A Vitrine de Performance)
-
-**Repositório:** `portal-frontend-architecture-vite-spa`
-**Principais Mudanças:**
-* **Links Cruzados:** Adicionei a tabela "Ecossistema" ligando ao Backend.
-* **Segurança:** Destaquei o CSP Level 2 e DOMPurify (os diferenciais técnicos).
-* **Status:** Reforçado o aviso de que é um "Architecture Showcase".
-
-```markdown
-# Portal Auditoria 2.0 — SPA Architecture Showcase
+ # Portal Auditoria 2.0 — SPA Architecture Showcase
 
 > **Frontend Enterprise-Grade de Alta Performance construído com Vanilla TypeScript & Vite.**
 
@@ -70,14 +58,5 @@ src/ ├── core/ # Framework-agnostic (Router, Http, State, Logger) ├─�
 
 ---
 
-Samuel Sereja Silva
-Contador & Desenvolvedor de Software
-Especialista em unir regras de negócio complexas com engenharia de software de alta performance.
-
-GitHub: @samuelserejasilva
-
-LinkedIn: https://www.linkedin.com/in/portalauditoria/
-
-E-mail: samuel@portalauditoria.com.br
-
-Documentação gerada / atualizada em Dezembro de 2025.
+👤 **Autor:** Samuel Sereja Silva
+*Contador & Desenvolvedor de Software*mentação gerada / atualizada em Dezembro de 2025.
